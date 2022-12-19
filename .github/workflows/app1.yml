@@ -32,12 +32,14 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.14
 
-      - name: Build app1
+      - name: Build app1 image
         run: |
           $ErrorActionPreference = "Stop"
 
           $application=app1
           $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
+          echo "APPLICATION_NAME=$application" >> $GITHUB_ENV
+          echo "APPLICATION_VERSION=$fullSemVer" >> $GITHUB_ENV
 
           $index = Get-Content ./src/$application/app/index.html
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->$fullSemVer<!--/Version-->"
@@ -46,3 +48,9 @@ jobs:
           docker build --tag $application:latest --tag $application:$fullSemVer --tag $application:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag $application:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag $application:${{ steps.gitversion.outputs.Major }} ./src/$application
           docker save $application:$fullSemVer -o $application-$fullSemVer.tar
         shell: pwsh
+
+      - uses: actions/upload-artifact@v3
+        name: Store app1 artifact
+        with:
+          name: ${{ env.APPLICATION_NAME }}
+          path: ${{ env.APPLICATION_NAME }}-${{ env.APPLICATION_VERSION }}.tar

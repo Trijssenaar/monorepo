@@ -49,7 +49,16 @@ jobs:
           $index | Set-Content ./src/${application}/app/index.html
 
           docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}
+
+          # GitHub Workflow Artifacts
           docker save ${application}:${fullSemVer} -o ${application}-${fullSemVer}.tar
+
+          # GitHub Packages
+          $env:CR_PAT | docker login ghcr.io -u $env:CR_USERNAME --password-stdin
+          docker push ghcr.io/$env:CR_USERNAME/${application}:${fullSemVer}
+          docker push ghcr.io/$env:CR_USERNAME/${application}::${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }}
+          docker push ghcr.io/$env:CR_USERNAME/${application}::${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}
+          docker push ghcr.io/$env:CR_USERNAME/${application}::${{ steps.gitversion.outputs.Major }}
         shell: pwsh
 
       - uses: actions/upload-artifact@v3
@@ -58,50 +67,11 @@ jobs:
           name: ${{ steps.build.outputs.APPLICATION_NAME }}
           path: ${{ steps.build.outputs.APPLICATION_NAME }}-${{ steps.build.outputs.APPLICATION_VERSION }}.tar
 
-  # deployment_DEV:
-  #   name: Deploy DEV
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   environment: app1 DEV
-  #   steps:
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: app1
-
-  #     - name: Display structure of downloaded files
-  #       run: ls -R
-
-  # deployment_TST:
-  #   name: Deploy TST
-  #   runs-on: ubuntu-latest
-  #   needs: deployment_DEV
-  #   environment: app1 TST
-  #   steps:
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: app1
-
-  #     - name: Display structure of downloaded files
-  #       run: ls -R
-
-  # deployment_ACC:
-  #   name: Deploy ACC
-  #   runs-on: ubuntu-latest
-  #   needs: deployment_TST
-  #   environment: app1 ACC
-  #   steps:
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: app1
-
-  #     - name: Display structure of downloaded files
-  #       run: ls -R
-
-  deployment_PRD:
-    name: Deploy PRD
+  deployment_DEV:
+    name: Deploy DEV
     runs-on: ubuntu-latest
     needs: build
-    environment: app1 PRD
+    environment: app1 DEV
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -110,7 +80,41 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
 
-      - name: Publish
-        run: |
-          $env:CR_PAT | docker login ghcr.io -u $env:CR_USERNAME --password-stdin
-        shell: pwsh
+  deployment_TST:
+    name: Deploy TST
+    runs-on: ubuntu-latest
+    needs: deployment_DEV
+    environment: app1 TST
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: app1
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+  deployment_ACC:
+    name: Deploy ACC
+    runs-on: ubuntu-latest
+    needs: deployment_TST
+    environment: app1 ACC
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: app1
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+  deployment_PRD:
+    name: Deploy PRD
+    runs-on: ubuntu-latest
+    needs: deployment_ACC
+    environment: app1 PRD
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: app1
+
+      - name: Display structure of downloaded files
+        run: ls -R

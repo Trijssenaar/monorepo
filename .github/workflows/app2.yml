@@ -4,13 +4,13 @@ on:
   push:
     branches: ["main"]
     paths:
-      - ./.github/workflows/app2.yml
-      - ./src/app2
+      - .github/workflows/app2.yml
+      - src/app2/**
   pull_request:
     branches: ["main"]
     paths:
-      - ./.github/workflows/app2.yml
-      - ./src/app2
+      - .github/workflows/app2.yml
+      - src/app2/**
 
 jobs:
   build:

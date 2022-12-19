@@ -1,16 +1,16 @@
-name: Build app1
+name: Build app2
 
 on:
   push:
     branches: ["main"]
     paths:
-      - ./.github/workflows/app1.yml
-      - ./src/app1
+      - ./.github/workflows/app2.yml
+      - ./src/app2
   pull_request:
     branches: ["main"]
     paths:
-      - ./.github/workflows/app1.yml
-      - ./src/app1
+      - ./.github/workflows/app2.yml
+      - ./src/app2
 
 jobs:
   build:
@@ -31,16 +31,16 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.14
 
-      - name: Build app1
+      - name: Build app2
         run: |
           $ErrorActionPreference = "Stop"
 
           $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
           $fullSemVer
 
-          $index = Get-Content ./src/app1/app/index.html
+          $index = Get-Content ./src/app2/app/index.html
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->$fullSemVer<!--/Version-->"
-          $index | Set-Content ./src/app1/app/index.html
+          $index | Set-Content ./src/app2/app/index.html
 
-          docker build --tag app1:latest --tag app1:$fullSemVer --tag app1:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag app1:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag app1:${{ steps.gitversion.outputs.Major }} ./src/app1
+          docker build --tag app2:latest --tag app2:$fullSemVer --tag app2:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag app2:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag app2:${{ steps.gitversion.outputs.Major }} ./src/app2
         shell: pwsh

@@ -24,7 +24,7 @@ jobs:
       run: |
         $ErrorActionPreference = "Stop"
 
-        $fullSemVer = (gitversion | ConvertFrom-Json)
+        $fullSemVer = (dotnet-gitversions | ConvertFrom-Json)
         $buildVersion="$($fullSemVer.Major).$($fullSemVer.Minor).$($fullSemVer.Patch)"
         echo "BUILD_VERSION=$buildversion"
         

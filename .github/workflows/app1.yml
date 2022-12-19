@@ -2,38 +2,39 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.7
-      with:
-        versionSpec: '5.x'
-    
-    - name: Get Build Version
-      run: |
-        $ErrorActionPreference = "Stop"
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-        dotnet-gitversion | ConvertFrom-Json
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.14
+        with:
+          versionSpec: "5.x"
 
-        $fullSemVer = (dotnet-gitversion | ConvertFrom-Json)
-        $buildVersion="$($fullSemVer.Major).$($fullSemVer.Minor).$($fullSemVer.Patch)"
-        echo "BUILD_VERSION=$buildversion"
-        
-        $index = Get-Content .\src\app1\app\index.html
-        $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->$env:BUILD_VERSION<!--/Version-->"
-        $index | Set-Content .\src\app1\app\index.html
-      shell: pwsh
-    
-    - name: Build the Docker image
-      run: docker build . --file .\src\app1\Dockerfile --tag app1:latest --tag app1:$($env.BUILD_VERSION)
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.14
+
+      - name: Build app1
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
+          $fullSemVer
+
+          $index = Get-Content ./src/app1/app/index.html
+          $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->$fullSemVer<!--/Version-->"
+          $index | Set-Content ./src/app1/app/index.html
+
+          docker build --tag app1:latest --tag app1:$fullSemVer --tag app1:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag app1:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag app1:${{ steps.gitversion.outputs.Major }} ./src/app1
+        shell: pwsh

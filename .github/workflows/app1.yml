@@ -40,9 +40,9 @@ jobs:
           $application="app1"
           $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
           echo "APPLICATION_NAME=${application}"
-          echo "APPLICATION_NAME=${application}" >> $GITHUB_OUTPUT
+          echo "APPLICATION_NAME=${application}" >> $env:GITHUB_OUTPUT
           echo "APPLICATION_VERSION=${fullSemVer}"
-          echo "APPLICATION_VERSION=${fullSemVer}" >> $GITHUB_OUTPUT
+          echo "APPLICATION_VERSION=${fullSemVer}" >> $env:GITHUB_OUTPUT
 
           $index = Get-Content ./src/${application}/app/index.html
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${fullSemVer}<!--/Version-->"

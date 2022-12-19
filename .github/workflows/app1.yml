@@ -33,15 +33,16 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.9.14
 
       - name: Build app1 image
+        id: build
         run: |
           $ErrorActionPreference = "Stop"
 
           $application="app1"
           $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
           echo "APPLICATION_NAME=${application}"
-          echo "APPLICATION_NAME=${application}" >> $GITHUB_ENV
+          echo "APPLICATION_NAME=${application}" >> $GITHUB_OUTPUT
           echo "APPLICATION_VERSION=${fullSemVer}"
-          echo "APPLICATION_VERSION=${fullSemVer}" >> $GITHUB_ENV
+          echo "APPLICATION_VERSION=${fullSemVer}" >> $GITHUB_OUTPUT
 
           $index = Get-Content ./src/${application}/app/index.html
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${fullSemVer}<!--/Version-->"
@@ -54,5 +55,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         name: Store app1 artifact
         with:
-          name: ${{ env.APPLICATION_NAME }}
-          path: ${{ env.APPLICATION_NAME }}-${{ env.APPLICATION_VERSION }}.tar
+          name: ${{ steps.build.outputs.APPLICATION_NAME }}
+          path: ${{ steps.build.outputs.APPLICATION_NAME }}-${{ steps.build.outputs.APPLICATION_VERSION }}.tar

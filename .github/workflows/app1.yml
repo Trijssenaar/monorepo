@@ -36,11 +36,13 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
 
+          $application=app1
           $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
 
-          $index = Get-Content ./src/app1/app/index.html
+          $index = Get-Content ./src/$application/app/index.html
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->$fullSemVer<!--/Version-->"
-          $index | Set-Content ./src/app1/app/index.html
+          $index | Set-Content ./src/$application/app/index.html
 
-          docker build --tag app1:latest --tag app1:$fullSemVer --tag app1:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag app1:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag app1:${{ steps.gitversion.outputs.Major }} ./src/app1
+          docker build --tag $application:latest --tag $application:$fullSemVer --tag $application:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag $application:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag $application:${{ steps.gitversion.outputs.Major }} ./src/$application
+          docker save $application:$fullSemVer -o $application-$fullSemVer.tar
         shell: pwsh

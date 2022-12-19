@@ -56,10 +56,10 @@ jobs:
 
           # GitHub Packages
           docker login ghcr.io -u $DOCKER_USER -p $DOCKER_PASSWORD
-          docker push ghcr.io/$env:CR_USERNAME/${application}:${fullSemVer}
-          docker push ghcr.io/$env:CR_USERNAME/${application}::${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }}
-          docker push ghcr.io/$env:CR_USERNAME/${application}::${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}
-          docker push ghcr.io/$env:CR_USERNAME/${application}::${{ steps.gitversion.outputs.Major }}
+          docker push ghcr.io/$env:CR_USER/${application}:${fullSemVer}
+          docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }}
+          docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}
+          docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}
         shell: pwsh
 
       - uses: actions/upload-artifact@v3

@@ -1,0 +1,32 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Get Build Version
+      run: |
+        $ErrorActionPreference = "Stop"
+
+        $fullSemVer = (gitversion | ConvertFrom-Json)
+        $buildVersion="$($fullSemVer.Major).$($fullSemVer.Minor).$($fullSemVer.Patch)"
+        echo "BUILD_VERSION=$buildversion"
+        
+        $index = Get-Content .\src\app1\app\index.html
+        $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->$env:BUILD_VERSION<!--/Version-->"
+        $index | Set-Content .\src\app1\app\index.html
+      shell: pwsh
+    
+    - name: Build the Docker image
+      run: docker build . --file .\src\app1\Dockerfile --tag app1:latest --tag app1:$($env.BUILD_VERSION)

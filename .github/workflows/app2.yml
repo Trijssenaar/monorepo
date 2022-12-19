@@ -37,7 +37,6 @@ jobs:
           $ErrorActionPreference = "Stop"
 
           $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
-          $fullSemVer
 
           $index = Get-Content ./src/app2/app/index.html
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->$fullSemVer<!--/Version-->"

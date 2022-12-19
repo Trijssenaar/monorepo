@@ -36,7 +36,7 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
 
-          $application=app1
+          $application="app1"
           $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
           echo "APPLICATION_NAME=${application}" >> $GITHUB_ENV
           echo "APPLICATION_VERSION=${fullSemVer}" >> $GITHUB_ENV

@@ -57,3 +57,25 @@ jobs:
         with:
           name: ${{ steps.build.outputs.APPLICATION_NAME }}
           path: ${{ steps.build.outputs.APPLICATION_NAME }}-${{ steps.build.outputs.APPLICATION_VERSION }}.tar
+
+  deployment_dev:
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: app1
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+  deployment_test:
+    runs-on: ubuntu-latest
+    environment: TST
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: app1
+
+      - name: Display structure of downloaded files
+        run: ls -R

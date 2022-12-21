@@ -55,7 +55,7 @@ jobs:
           docker save ${application}:${fullSemVer} -o ${application}-${fullSemVer}.tar
 
           # GitHub Packages
-          docker login ghcr.io -u $DOCKER_USER -p $DOCKER_PASSWORD
+          docker login ghcr.io -u $env:DOCKER_USER -p $env:DOCKER_PASSWORD
           docker push ghcr.io/$env:CR_USER/${application}:${fullSemVer}
           docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }}
           docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}

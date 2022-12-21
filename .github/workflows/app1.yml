@@ -63,7 +63,7 @@ jobs:
         shell: pwsh
         env:
           DOCKER_USER: $DOCKER_USER
-          $DOCKER_PASSWORD: $DOCKER_PASSWORD
+          DOCKER_PASSWORD: $DOCKER_PASSWORD
 
       - uses: actions/upload-artifact@v3
         name: Store app1 artifact

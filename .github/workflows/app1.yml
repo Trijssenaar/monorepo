@@ -61,6 +61,9 @@ jobs:
           docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}
           docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}
         shell: pwsh
+        env:
+          DOCKER_USER: $DOCKER_USER
+          $DOCKER_PASSWORD: $DOCKER_PASSWORD
 
       - uses: actions/upload-artifact@v3
         name: Store app1 artifact

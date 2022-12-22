@@ -25,6 +25,9 @@ jobs:
       - run: |
           jf --version
           jf rt ping
+          jf rt dl artifacts/
+          jf rt u aether artifacts/
+          jf rt bp
       - name: Checkout
         uses: actions/checkout@v3
         with:

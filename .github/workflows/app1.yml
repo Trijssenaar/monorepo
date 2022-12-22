@@ -52,6 +52,7 @@ jobs:
 
           # GitHub Workflow Artifacts
           docker save ${application}:${fullSemVer} -o ${application}.tar
+        shell: pwsh
 
       - uses: actions/upload-artifact@v3
         name: Store GitHub Workflow artifact
@@ -67,10 +68,13 @@ jobs:
           JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
       - name: Store GitHub Workflow artifact
         run: |
+          $ErrorActionPreference = "Stop"
+
           jf --version
           jf rt ping
           jf rt ping
           jf rt u ${{ steps.build.outputs.APPLICATION_NAME }}.tar artifacts/
+        shell: pwsh
 
   deployment_DEV:
     name: Deploy DEV

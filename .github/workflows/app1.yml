@@ -51,6 +51,7 @@ jobs:
           Write-Host "docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}"
           docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}
           Write-Host "docker save --output ${application}.tar ${application}:${fullSemVer}"
+          docker version
           docker save --output ${application}.tar ${application}:${fullSemVer}
         shell: pwsh
 

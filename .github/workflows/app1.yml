@@ -19,15 +19,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: jfrog/setup-jfrog-cli@v3
-        env:
-          JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
-      - run: |
-          jf --version
-          jf rt ping
-          jf rt dl artifacts/
-          jf rt u aether artifacts/
-          jf rt bp
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -37,10 +28,20 @@ jobs:
         uses: gittools/actions/gitversion/setup@v0.9.14
         with:
           versionSpec: "5.x"
-
       - name: Determine Version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.14
+
+      - name: Install JFrog
+        uses: jfrog/setup-jfrog-cli@v3
+        with:
+          version: 2.24.2
+        env:
+          JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
+      - name: Validate JFrog
+        run: |
+          jf --version
+          jf rt ping
 
       - name: Build app1 image
         id: build
@@ -61,24 +62,15 @@ jobs:
           docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}
 
           # GitHub Workflow Artifacts
-          docker save ${application}:${fullSemVer} -o ${application}-${fullSemVer}.tar
+          docker save ${application}:${fullSemVer} -o ${application}.tar
 
-          # GitHub Packages
-          docker login ghcr.io -u $env:DOCKER_USER -p $env:DOCKER_PASSWORD
-          docker push ghcr.io/$env:CR_USER/${application}:${fullSemVer}
-          docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }}
-          docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}
-          docker push ghcr.io/$env:CR_USER/${application}:${{ steps.gitversion.outputs.Major }}
-        shell: pwsh
-        env:
-          DOCKER_USER: $DOCKER_USER
-          DOCKER_PASSWORD: $DOCKER_PASSWORD
+          jf rt u ${application}.tar artifacts/
 
       - uses: actions/upload-artifact@v3
         name: Store app1 artifact
         with:
           name: ${{ steps.build.outputs.APPLICATION_NAME }}
-          path: ${{ steps.build.outputs.APPLICATION_NAME }}-${{ steps.build.outputs.APPLICATION_VERSION }}.tar
+          path: ${{ steps.build.outputs.APPLICATION_NAME }}.tar
 
   deployment_DEV:
     name: Deploy DEV

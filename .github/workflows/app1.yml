@@ -48,11 +48,11 @@ jobs:
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${fullSemVer}<!--/Version-->"
           $index | Set-Content ./src/${application}/app/index.html
 
-          Write-Host "docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}"
           docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}
-          Write-Host "docker save --output ${application}.tar ${application}:${fullSemVer}"
-          docker version
-          docker save --help
+          while (-not(Test-Path ./${application}.tar)) { 
+            Write-Host "./${application}.tar not yet available..."
+            Start-Sleep 10 
+          }
           docker save --output ./${application}.tar ${application}:${fullSemVer}
         shell: pwsh
 

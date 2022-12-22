@@ -20,8 +20,11 @@ jobs:
 
     steps:
       - uses: jfrog/setup-jfrog-cli@v3
-      - run: jf --version
-
+        env:
+          JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
+      - run: |
+          jf --version
+          jf rt ping
       - name: Checkout
         uses: actions/checkout@v3
         with:

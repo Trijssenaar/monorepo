@@ -12,8 +12,8 @@ on:
       - .github/workflows/release.yml
 
 jobs:
-  build:
-    name: Build
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +36,7 @@ jobs:
           version: 2.24.2
         env:
           JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
-      - name: Store JFrog artifact
+      - name: Retrieve JFrog artifacts
         run: |
           $ErrorActionPreference = "Stop"
 
@@ -45,8 +45,8 @@ jobs:
 
           jf --version
           jf rt ping
-          jf rt download --build=app1/0.1.0+65 applications/* applications
-          jf rt download --build=app2/0.1.0+66 applications/* applications
+          jf rt download --build=app1/0.1.0+65 applications/* applications/
+          jf rt download --build=app2/0.1.0+66 applications/* applications/
           jf rt build-publish
         shell: pwsh
 

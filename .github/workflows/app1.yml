@@ -59,6 +59,10 @@ jobs:
           name: ${{ steps.build.outputs.APPLICATION_NAME }}
           path: ${{ steps.build.outputs.APPLICATION_NAME }}.tar
 
+    outputs:
+      fullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}
+      informationalVersion: ${{ steps.gitversion.outputs.InformationalVersion }}
+
   publish:
     name: Publish
     runs-on: ubuntu-latest
@@ -78,6 +82,9 @@ jobs:
       - name: Store JFrog artifact
         run: |
           $ErrorActionPreference = "Stop"
+
+          $env:JFROG_CLI_BUILD_NAME='app1'
+          $env:JFROG_CLI_BUILD_NUMBER=${{needs.build.outputs.FullSemVer}}
 
           jf --version
           jf rt ping

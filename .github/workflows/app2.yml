@@ -106,6 +106,3 @@ jobs:
           jf rt upload app2.tar applications/app2-$env:JFROG_CLI_BUILD_NUMBER.tar
           jf rt build-publish
         shell: pwsh
-
-      - name: Display structure of downloaded files
-        run: ls -R

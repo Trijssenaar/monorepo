@@ -49,3 +49,6 @@ jobs:
           jf rt download app2.tar --build-name=app1 --build-number=0.1.0+66
           jf rt build-publish
         shell: pwsh
+
+      - name: Display structure of downloaded files
+        run: ls -R

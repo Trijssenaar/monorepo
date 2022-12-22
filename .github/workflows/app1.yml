@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: jfrog/setup-jfrog-cli@v3
+      - run: jf --version
+
       - name: Checkout
         uses: actions/checkout@v3
         with:

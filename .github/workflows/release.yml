@@ -40,6 +40,9 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
 
+          $env:JFROG_CLI_BUILD_NAME='release'
+          $env:JFROG_CLI_BUILD_NUMBER='${{ steps.gitversion.outputs.FullSemVer }}'
+
           jf --version
           jf rt ping
           jf rt download app1.tar --build-name=app1 --build-number=0.1.0+65

@@ -45,8 +45,8 @@ jobs:
 
           jf --version
           jf rt ping
-          jf rt download */* --build-name=app1 --build-number=0.1.0+65
-          jf rt download */* --build-name=app2 --build-number=0.1.0+66
+          jf rt download --build=app1/0.1.0+65
+          jf rt download --build=app2/0.1.0+66
           jf rt build-publish
         shell: pwsh
 

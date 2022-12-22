@@ -83,7 +83,6 @@ jobs:
     needs:
       - build
       - deployment_DEV
-    environment: app2 Publish
     steps:
       - uses: actions/download-artifact@v3
         with:

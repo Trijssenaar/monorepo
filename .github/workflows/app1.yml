@@ -86,6 +86,6 @@ jobs:
           $env:JFROG_CLI_BUILD_NUMBER='${{needs.build.outputs.FullSemVer}}'
 
           jf --version
-          jf rt upload app1.tar applications/app1-$env:JFROG_CLI_BUILD_NUMBER.tar
+          jf rt upload app1.tar applications/app1-$($env:JFROG_CLI_BUILD_NUMBER).tar
           jf rt build-publish
         shell: pwsh

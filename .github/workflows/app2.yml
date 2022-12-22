@@ -103,6 +103,6 @@ jobs:
 
           jf --version
           jf rt ping
-          jf rt upload app2.tar applications/
+          jf rt upload app2.tar applications/$env:JFROG_CLI_BUILD_NUMBER
           jf rt build-publish
         shell: pwsh

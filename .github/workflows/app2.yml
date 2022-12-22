@@ -59,21 +59,6 @@ jobs:
           name: ${{ steps.build.outputs.APPLICATION_NAME }}
           path: ${{ steps.build.outputs.APPLICATION_NAME }}.tar
 
-      - name: Install JFrog
-        uses: jfrog/setup-jfrog-cli@v3
-        with:
-          version: 2.24.2
-        env:
-          JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
-      - name: Store JFrog artifact
-        run: |
-          $ErrorActionPreference = "Stop"
-
-          jf --version
-          jf rt ping
-          jf rt upload ${{ steps.build.outputs.APPLICATION_NAME }}.tar applications/
-        shell: pwsh
-
   deployment_DEV:
     name: Deploy DEV
     runs-on: ubuntu-latest

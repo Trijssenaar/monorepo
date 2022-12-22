@@ -48,8 +48,10 @@ jobs:
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${fullSemVer}<!--/Version-->"
           $index | Set-Content ./src/${application}/app/index.html
 
+          Write-Host "docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}"
           docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}
-          docker save  --output ${application}.tar ${application}:${fullSemVer}
+          Write-Host "docker save --output ${application}.tar ${application}:${fullSemVer}"
+          docker save --output ${application}.tar ${application}:${fullSemVer}
         shell: pwsh
 
       - uses: actions/upload-artifact@v3
@@ -64,7 +66,7 @@ jobs:
           version: 2.24.2
         env:
           JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
-      - name: Store GitHub Workflow artifact
+      - name: Store JFrog artifact
         run: |
           $ErrorActionPreference = "Stop"
 

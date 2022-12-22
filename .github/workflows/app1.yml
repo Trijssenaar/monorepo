@@ -84,7 +84,7 @@ jobs:
           $ErrorActionPreference = "Stop"
 
           $env:JFROG_CLI_BUILD_NAME='app1'
-          $env:JFROG_CLI_BUILD_NUMBER=${{needs.build.outputs.FullSemVer}}
+          $env:JFROG_CLI_BUILD_NUMBER='${{needs.build.outputs.FullSemVer}}'
 
           jf --version
           jf rt ping

@@ -59,6 +59,16 @@ jobs:
           name: ${{ steps.build.outputs.APPLICATION_NAME }}
           path: ${{ steps.build.outputs.APPLICATION_NAME }}.tar
 
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: build
+    environment: app1 Publish
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: app1
+
       - name: Install JFrog
         uses: jfrog/setup-jfrog-cli@v3
         with:
@@ -71,57 +81,5 @@ jobs:
 
           jf --version
           jf rt ping
-          jf rt upload ${{ steps.build.outputs.APPLICATION_NAME }}.tar example-repo-local/
+          jf rt upload app1.tar example-repo-local/
         shell: pwsh
-
-  deployment_DEV:
-    name: Deploy DEV
-    runs-on: ubuntu-latest
-    needs: build
-    environment: app1 DEV
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: app1
-
-      - name: Display structure of downloaded files
-        run: ls -R
-
-  deployment_TST:
-    name: Deploy TST
-    runs-on: ubuntu-latest
-    needs: deployment_DEV
-    environment: app1 TST
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: app1
-
-      - name: Display structure of downloaded files
-        run: ls -R
-
-  deployment_ACC:
-    name: Deploy ACC
-    runs-on: ubuntu-latest
-    needs: deployment_TST
-    environment: app1 ACC
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: app1
-
-      - name: Display structure of downloaded files
-        run: ls -R
-
-  deployment_PRD:
-    name: Deploy PRD
-    runs-on: ubuntu-latest
-    needs: deployment_ACC
-    environment: app1 PRD
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: app1
-
-      - name: Display structure of downloaded files
-        run: ls -R

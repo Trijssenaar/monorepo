@@ -49,9 +49,7 @@ jobs:
           $index | Set-Content ./src/${application}/app/index.html
 
           docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}
-
-          # GitHub Workflow Artifacts
-          docker save ${application}:${fullSemVer} -o ${application}.tar
+          docker save ${application}:${fullSemVer} --output ${application}.tar
         shell: pwsh
 
       - uses: actions/upload-artifact@v3

@@ -64,6 +64,7 @@ jobs:
           # GitHub Workflow Artifacts
           docker save ${application}:${fullSemVer} -o ${application}.tar
 
+          jf rt ping
           jf rt u ${application}.tar artifacts/
 
       - uses: actions/upload-artifact@v3

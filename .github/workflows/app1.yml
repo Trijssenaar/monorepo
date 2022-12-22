@@ -71,8 +71,7 @@ jobs:
 
           jf --version
           jf rt ping
-          jf rt ping
-          jf rt u ${{ steps.build.outputs.APPLICATION_NAME }}.tar artifacts/
+          jf rt upload ${{ steps.build.outputs.APPLICATION_NAME }}.tar example-repo-local/
         shell: pwsh
 
   deployment_DEV:

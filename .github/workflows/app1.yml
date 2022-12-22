@@ -88,6 +88,6 @@ jobs:
 
           jf --version
           jf rt ping
-          jf rt upload app1.tar example-repo-local/
+          jf rt upload app1.tar applications/
           jf rt build-publish
         shell: pwsh

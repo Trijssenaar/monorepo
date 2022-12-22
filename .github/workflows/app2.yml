@@ -59,6 +59,10 @@ jobs:
           name: ${{ steps.build.outputs.APPLICATION_NAME }}
           path: ${{ steps.build.outputs.APPLICATION_NAME }}.tar
 
+    outputs:
+      fullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}
+      informationalVersion: ${{ steps.gitversion.outputs.InformationalVersion }}
+
   deployment_DEV:
     name: Deploy DEV
     runs-on: ubuntu-latest

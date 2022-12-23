@@ -63,7 +63,7 @@ jobs:
           if('${{ github.ref }}' -ne 'refs/heads/main'){
             $buildNumber+='.${{ github.run_number }}'
           }
-          $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${buildNumber}
+          $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${buildNumber}"
 
           docker build `
             --tag ${application}:latest `

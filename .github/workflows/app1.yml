@@ -45,19 +45,13 @@ jobs:
           $ErrorActionPreference = "Stop"
 
           $application="app1"
-          $fullSemVer="${{ steps.gitversion.outputs.FullSemVer }}".Replace('+','.')
-          echo "APPLICATION_NAME=${application}"
-          echo "APPLICATION_NAME=${application}" >> $env:GITHUB_OUTPUT
-          echo "APPLICATION_VERSION=${fullSemVer}"
-          echo "APPLICATION_VERSION=${fullSemVer}" >> $env:GITHUB_OUTPUT
-
           $index = Get-Content ./src/${application}/app/index.html
-          $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${fullSemVer}<!--/Version-->"
+          $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${{ steps.gitversion.outputs.FullSemVer }}<!--/Version-->"
           $index | Set-Content ./src/${application}/app/index.html
 
           $hostName='trijssenaar.jfrog.io'
           $folderName='applications-docker-local'
-          $imageName="${application}:${fullSemVer}"
+          $imageName="${application}:${{ steps.gitversion.outputs.MajorMinorPatch }}"
           $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath $imageName
 
           docker build `
@@ -67,13 +61,8 @@ jobs:
           docker push $fullTag
         shell: pwsh
 
-      - uses: actions/upload-artifact@v3
-        name: Store GitHub Workflow artifact
-        with:
-          name: ${{ steps.build.outputs.APPLICATION_NAME }}
-          path: ${{ steps.build.outputs.APPLICATION_NAME }}.tar
-
     outputs:
+      MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}
       fullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}
       informationalVersion: ${{ steps.gitversion.outputs.InformationalVersion }}
 

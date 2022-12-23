@@ -31,6 +31,8 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.15
 
+      - uses: php-actions/composer@v6
+
       - name: Install JFrog
         uses: jfrog/setup-jfrog-cli@v3
         with:

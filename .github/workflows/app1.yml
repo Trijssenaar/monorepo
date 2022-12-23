@@ -48,9 +48,15 @@ jobs:
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${fullSemVer}<!--/Version-->"
           $index | Set-Content ./src/${application}/app/index.html
 
-          docker build --tag ${application}:latest --tag ${application}:${fullSemVer} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}.${{ steps.gitversion.outputs.Patch }} --tag ${application}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }} --tag ${application}:${{ steps.gitversion.outputs.Major }} ./src/${application}
+          docker build `
+            --tag ${application}:latest `
+            --tag trijssenaar.jfrog.io/applications-docker-local/${application}:${fullSemVer} `
+            ./src/${application}
           Start-Sleep 10 
-          docker save --output ./${application}.tar ${application}:${fullSemVer}
+          # docker save --output ./${application}.tar ${application}:${fullSemVer}
+
+          echo "AKCp8nyYKSmcPoAwUgzmD4UFA4oihs9EorAWtFV2i3r2JnQqeVEr6spTQBeEtwKTDpuMMRyGj" | docker login -ustrijssenaar@xpirit.com --password-stdin trijssenaar.jfrog.io
+          docker push trijssenaar.jfrog.io/applications-docker-local/${application}:${fullSemVer}
         shell: pwsh
 
       - uses: actions/upload-artifact@v3

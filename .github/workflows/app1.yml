@@ -48,17 +48,20 @@ jobs:
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${fullSemVer}<!--/Version-->"
           $index | Set-Content ./src/${application}/app/index.html
 
+          $hostName='trijssenaar.jfrog.io'
+          $folderName='applications-docker-local'
+          $imageName="${application}:${fullSemVer}"
+          $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath $imageName
+
           docker build `
             --tag ${application}:latest `
-            --tag trijssenaar.jfrog.io/applications-docker-local/${application}:${fullSemVer} `
+            --tag $fullTag `
             ./src/${application}
-          Start-Sleep 10 
-          # docker save --output ./${application}.tar ${application}:${fullSemVer}
-
-          docker login --help
-          echo "AKCp8nyYKSmcPoAwUgzmD4UFA4oihs9EorAWtFV2i3r2JnQqeVEr6spTQBeEtwKTDpuMMRyGj" | docker login -u strijssenaar@xpirit.com --password-stdin trijssenaar.jfrog.io
-          docker push trijssenaar.jfrog.io/applications-docker-local/${application}:${fullSemVer}
+          echo $env:DOCKER_APIKEY | docker login -u strijssenaar@xpirit.com --password-stdin $docker_hostname
+          docker push $fullTag
         shell: pwsh
+        env:
+          DOCKER_APIKEY: ${{ secrets.DOCKER_APIKEY }}
 
       - uses: actions/upload-artifact@v3
         name: Store GitHub Workflow artifact

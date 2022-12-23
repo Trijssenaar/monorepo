@@ -2,8 +2,20 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
+ registries:
+   private-artifactory:
+     type: docker-registry
+     url: https://trijssenaar.jfrog.io
+     username: ${{ secrets.ARTIFACTORY_DOCKER_USERNAME }}
+     password: ${{ secrets.ARTIFACTORY_DOCKER_PASSWORD }}
 updates:
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/"
+    registries:
+      - private-artifactory
+    schedule:
+      interval: "daily"

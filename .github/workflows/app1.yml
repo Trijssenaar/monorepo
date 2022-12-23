@@ -56,7 +56,7 @@ jobs:
           # docker save --output ./${application}.tar ${application}:${fullSemVer}
 
           docker login --help
-          echo "AKCp8nyYKSmcPoAwUgzmD4UFA4oihs9EorAWtFV2i3r2JnQqeVEr6spTQBeEtwKTDpuMMRyGj" | docker login -ustrijssenaar@xpirit.com --password-stdin trijssenaar.jfrog.io
+          echo "AKCp8nyYKSmcPoAwUgzmD4UFA4oihs9EorAWtFV2i3r2JnQqeVEr6spTQBeEtwKTDpuMMRyGj" | docker login -u strijssenaar@xpirit.com --password-stdin trijssenaar.jfrog.io
           docker push trijssenaar.jfrog.io/applications-docker-local/${application}:${fullSemVer}
         shell: pwsh
 

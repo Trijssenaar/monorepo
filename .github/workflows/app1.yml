@@ -65,31 +65,3 @@ jobs:
       MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}
       fullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}
       informationalVersion: ${{ steps.gitversion.outputs.InformationalVersion }}
-
-  publish:
-    name: Publish
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: app1
-
-      - name: Install JFrog
-        uses: jfrog/setup-jfrog-cli@v3
-        with:
-          version: 2.24.2
-        env:
-          JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
-      - name: Store JFrog artifact
-        run: |
-          $ErrorActionPreference = "Stop"
-
-          $env:JFROG_CLI_BUILD_NAME='app1'
-          $env:JFROG_CLI_BUILD_NUMBER='${{needs.build.outputs.FullSemVer}}'
-
-          jf --version
-          jf rt upload app1.tar applications/app1-$($env:JFROG_CLI_BUILD_NUMBER).tar
-          jf rt build-publish
-        shell: pwsh

@@ -52,6 +52,9 @@ jobs:
           $hostName='trijssenaar.jfrog.io'
           $folderName='applications-docker-local'
           $imageName="${application}:${{ steps.gitversion.outputs.MajorMinorPatch }}"
+          if(${{ github.ref }} -ne 'refs/heads/main'){
+            $imageName+='.${{ github.run_number }}'
+          }
           $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath $imageName
 
           docker build `

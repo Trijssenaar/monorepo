@@ -32,6 +32,13 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.15
 
+      - name: Login to Artifactory
+        uses: docker/login-action@v2
+        with:
+          registry: trijssenaar.jfrog.io
+          username: strijssenaar@xpirit.com
+          password: ${{ secrets.DOCKER_APIKEY }}
+
       - name: Build app1 image
         id: build
         run: |
@@ -57,11 +64,8 @@ jobs:
             --tag ${application}:latest `
             --tag $fullTag `
             ./src/${application}
-          echo "$env:DOCKER_APIKEY" | docker login -u strijssenaar@xpirit.com --password-stdin $docker_hostname
           docker push $fullTag
         shell: pwsh
-        env:
-          DOCKER_APIKEY: ${{ secrets.DOCKER_APIKEY }}
 
       - uses: actions/upload-artifact@v3
         name: Store GitHub Workflow artifact

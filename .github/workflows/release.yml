@@ -42,8 +42,8 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
 
-          docker pull applications-docker-local/app1/0.1.0.95
-          docker pull applications-docker-local/app2/0.1.0.23/
+          docker pull trijssenaar.jfrog.io/applications-docker-local/app1:0.1.0.95
+          docker pull trijssenaar.jfrog.io/applications-docker-local/app2:0.1.0.23
         shell: pwsh
 
       # - name: Install JFrog

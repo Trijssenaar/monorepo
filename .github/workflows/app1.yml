@@ -57,8 +57,7 @@ jobs:
             --tag ${application}:latest `
             --tag $fullTag `
             ./src/${application}
-          echo $env:DOCKER_APIKEY
-          echo $env:DOCKER_APIKEY | docker login -u strijssenaar@xpirit.com --password-stdin $docker_hostname
+          echo "$env:DOCKER_APIKEY" | docker login -u strijssenaar@xpirit.com --password-stdin $docker_hostname
           docker push $fullTag
         shell: pwsh
         env:

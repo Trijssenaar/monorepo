@@ -32,6 +32,22 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.15
 
+      - name: Setup JFrog
+        uses: jfrog/setup-jfrog-cli@v3
+        with:
+          version: 2.24.2
+        env:
+          JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
+      - name: Store JFrog artifact
+        run: |
+          $ErrorActionPreference = "Stop"
+
+
+          jf --version
+          jf rt ping
+          jf rt upload app2.tar applications/app2-$env:JFROG_CLI_BUILD_NUMBER.tar
+        shell: pwsh
+
       - name: Login to Docker
         uses: docker/login-action@v2
         with:
@@ -51,17 +67,22 @@ jobs:
 
           $hostName='trijssenaar.jfrog.io'
           $folderName='applications-docker-local'
-          $imageName="${application}:${{ steps.gitversion.outputs.MajorMinorPatch }}"
+          $imageName="${application}"
+          $buildNumber="${{ steps.gitversion.outputs.MajorMinorPatch }}"
           if('${{ github.ref }}' -ne 'refs/heads/main'){
-            $imageName+='.${{ github.run_number }}'
+            $buildNumber+='.${{ github.run_number }}'
           }
-          $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath $imageName
+          $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${buildNumber}
 
           docker build `
             --tag ${application}:latest `
             --tag $fullTag `
             ./src/${application}
           docker push $fullTag
+
+          $env:JFROG_CLI_BUILD_NAME=$application
+          $env:JFROG_CLI_BUILD_NUMBER=$buildNumber
+          jf rt build-publish
         shell: pwsh
 
     outputs:

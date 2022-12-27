@@ -71,8 +71,8 @@ jobs:
             ./src/${application}
           docker push $fullTag
 
-          $env:JFROG_CLI_BUILD_NAME=$application
-          $env:JFROG_CLI_BUILD_NUMBER=$buildNumber
+          $env:JFROG_CLI_BUILD_NAME=${imageName}
+          $env:JFROG_CLI_BUILD_NUMBER=${buildNumber}
           jf rt build-publish
         shell: pwsh
 

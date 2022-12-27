@@ -46,7 +46,7 @@ jobs:
           username: strijssenaar@xpirit.com
           password: ${{ secrets.DOCKER_APIKEY }}
 
-      - name: Build image app2-${{ steps.gitversion.outputs.SemVer }} version ${{ steps.gitversion.outputs.BuildMetaData }}${{ steps.gitversion.outputs.PreReleaseNumber }}
+      - name: Build image app2-${{ steps.gitversion.outputs.SemVer }} version ${{ steps.gitversion.outputs.BuildMetaData }}
         id: build
         run: |
           $ErrorActionPreference = "Stop"
@@ -58,8 +58,8 @@ jobs:
 
           $hostName='trijssenaar.jfrog.io'
           $folderName='applications-docker-local'
-          $imageName="${application}-${{ steps.gitversion.outputs.SemVer }}"
-          $buildNumber="${{ steps.gitversion.outputs.BuildMetaData }}${{ steps.gitversion.outputs.PreReleaseNumber }}"
+          $imageName="${application}-${{ steps.gitversion.outputs.SemVer }}".ToLower()
+          $buildNumber="${{ steps.gitversion.outputs.BuildMetaData }}"
           if('${{ github.ref }}' -ne 'refs/heads/main'){
             $buildNumber+='.${{ github.run_number }}'
           }

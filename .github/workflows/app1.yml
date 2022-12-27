@@ -46,12 +46,12 @@ jobs:
           username: strijssenaar@xpirit.com
           password: ${{ secrets.DOCKER_APIKEY }}
 
-      - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }} version ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+      - name: Build image app2-${{ steps.gitversion.outputs.EscapedBranchName }} version ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
         id: build
         run: |
           $ErrorActionPreference = "Stop"
 
-          $application="app1"
+          $application="app2"
           $index = Get-Content ./src/${application}/app/index.html
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${{ steps.gitversion.outputs.FullSemVer }}<!--/Version-->"
           $index | Set-Content ./src/${application}/app/index.html
@@ -59,17 +59,20 @@ jobs:
           $hostName='trijssenaar.jfrog.io'
           $folderName='applications-docker-local'
           $imageName="${application}-${{ steps.gitversion.outputs.EscapedBranchName }}".ToLower()
-          $buildNumber="${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
-          $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${buildNumber}"
+          $majorMinorPatchCommits=""
+          $fullTag=
 
           docker build `
-            --tag ${application}:latest `
-            --tag $fullTag `
+            --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:latest") `
+            --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}") `
+            --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}") `
+            --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}") `
+            --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.Major }}") `
             ./src/${application}
-          docker push $fullTag
+          docker push --all-tags $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}")
 
           $env:JFROG_CLI_BUILD_NAME=${imageName}
-          $env:JFROG_CLI_BUILD_NUMBER=${buildNumber}
+          $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
           jf rt build-publish
         shell: pwsh
 

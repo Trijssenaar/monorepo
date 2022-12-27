@@ -62,18 +62,17 @@ jobs:
           $majorMinorPatchCommits=""
           $fullTag=
 
-          docker build `
+          jf docker build `
             --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:latest") `
             --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}") `
             --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}") `
             --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}") `
             --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.Major }}") `
             ./src/${application}
-          docker push --all-tags $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}")
+          jf docker push --all-tags $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}")
 
           # $env:JFROG_CLI_BUILD_NAME=${imageName}
           # $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
-          jf rt docker-push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:latest") applications-docker-local
           jf rt build-publish
         shell: pwsh
 

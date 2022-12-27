@@ -42,8 +42,14 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
 
-          docker pull trijssenaar.jfrog.io/applications-docker-local/app1:0.1.0.95
-          docker pull trijssenaar.jfrog.io/applications-docker-local/app2:0.1.0.23
+          $artifactsFilePath = "$PSScriptRoot/artifacts.json"
+          $artifacts = Get-Content -Path $artifactsFilePath | ConvertFrom-Json -AsHashtable
+          # $artifacts.$Artifact = $Version
+          # $artifacts | ConvertTo-Json | Set-Content -Path $artifactsFilePath
+
+          foreach($artifact in $artifacts.GetEnumerator()){
+            docker pull trijssenaar.jfrog.io/applications-docker-local/$($artifact.Name):$($artifact.Value)
+          }
           docker image ls
         shell: pwsh
 

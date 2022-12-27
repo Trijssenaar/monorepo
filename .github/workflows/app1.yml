@@ -65,7 +65,7 @@ jobs:
           jf docker build `
             --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}") `
             ./src/${application}
-          jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"):
+          jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}")
 
           # $env:JFROG_CLI_BUILD_NAME=${imageName}
           # $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}

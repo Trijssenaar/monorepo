@@ -71,8 +71,8 @@ jobs:
             ./src/${application}
           docker push --all-tags $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}")
 
-          $env:JFROG_CLI_BUILD_NAME=${imageName}
-          $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+          # $env:JFROG_CLI_BUILD_NAME=${imageName}
+          # $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
           jf rt build-publish
         shell: pwsh
 

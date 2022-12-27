@@ -46,7 +46,7 @@ jobs:
           username: strijssenaar@xpirit.com
           password: ${{ secrets.DOCKER_APIKEY }}
 
-      - name: Build image
+      - name: Build image app2-${{ steps.gitversion.outputs.SemVer }} version ${{ steps.gitversion.outputs.BuildMetaData }}
         id: build
         run: |
           $ErrorActionPreference = "Stop"

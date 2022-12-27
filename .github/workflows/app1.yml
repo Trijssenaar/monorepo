@@ -73,7 +73,7 @@ jobs:
 
           # $env:JFROG_CLI_BUILD_NAME=${imageName}
           # $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
-          jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:latest")
+          jf rt docker-push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:latest")
           jf rt build-publish
         shell: pwsh
 

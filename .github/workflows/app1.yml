@@ -58,8 +58,8 @@ jobs:
 
           $hostName='trijssenaar.jfrog.io'
           $folderName='applications-docker-local'
-          $imageName="${application}"
-          $buildNumber="${{ steps.gitversion.outputs.MajorMinorPatch }}"
+          $imageName="${application}-${{ steps.gitversion.outputs.SemVer }}"
+          $buildNumber="${{ steps.gitversion.outputs.BuildMetaData }}"
           if('${{ github.ref }}' -ne 'refs/heads/main'){
             $buildNumber+='.${{ github.run_number }}'
           }

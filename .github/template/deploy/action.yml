@@ -20,6 +20,5 @@ runs:
     - uses: hashicorp/setup-terraform@v2
 
     - name: Terraform fmt
-      if: fmt
       run: terraform fmt -check
       shell: pwsh

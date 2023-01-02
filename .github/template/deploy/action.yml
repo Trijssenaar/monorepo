@@ -5,6 +5,9 @@ inputs:
   environment:
     required: true
     description: "Name of the environment to deploy to"
+  key:
+    required: true
+    description: "Key to use for the Terraform state storage account"
 
 runs:
   using: "composite"
@@ -29,8 +32,10 @@ runs:
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend=false
         terraform validate
 
-        Write-Host "resourceGroupName=${{ steps.prepare-tfstate.outputs.resourceGroupName }}"
-        Write-Host "storageAccountName=${{ steps.prepare-tfstate.outputs.storageAccountName }}"
-        Write-Host "containerName=${{ steps.prepare-tfstate.outputs.containerName }}"
+        $resourceGroupName=${{ steps.prepare-tfstate.outputs.resourceGroupName }}
+        $storageAccountName=${{ steps.prepare-tfstate.outputs.storageAccountName }}
+        $containerName=${{ steps.prepare-tfstate.outputs.containerName }}
+
+        terraform init -input=false -backend-config="resource_group_name=${resourceGroupName}" -backend-config="storage_account_name=${storageAccountName}" -backend-config="container_name=${containerName}" -backend-config="key=$env:RESOURCE_GROUP_NAME"
 
       shell: pwsh

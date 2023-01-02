@@ -23,7 +23,7 @@ runs:
       run: |
         $ErrorActionPreference = 'Stop'
         terraform version
-        terraform -chdir=./infra/terraform/deploy/demo/ init -input=false -backend=false
+        terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend=false
         terraform validate
 
       shell: pwsh

@@ -2,7 +2,7 @@ name: deploy
 description: "Deploys an application to an environment"
 
 inputs:
-  environment-name:
+  environment:
     required: true
     description: "Name of the environment to deploy to"
 
@@ -12,7 +12,7 @@ runs:
     - name: Prepare environment variables
       uses: "./.github/template/deploy-import"
       with:
-        environment: ${{ inputs.environment-name }}
+        environment: ${{ inputs.environment }}
 
     - name: Prepare Azure
       uses: azure/login@v1

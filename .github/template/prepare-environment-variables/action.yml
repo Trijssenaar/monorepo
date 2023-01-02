@@ -13,5 +13,5 @@ runs:
       run: |
         $ErrorActionPreference = 'Stop'
 
-        Get-Content -Path ./.github/workflows/environments/${{ inputs.environment }} >> $Env:GITHUB_ENV
+        Get-Content -Path ./.github/environments/${{ inputs.environment }} >> $Env:GITHUB_ENV
       shell: pwsh

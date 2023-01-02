@@ -5,6 +5,7 @@ runs:
   using: "composite"
   steps:
     - name: Prepare Terraform state
+      id: tfstate
       uses: azure/powershell@v1
       with:
         inlineScript: |
@@ -20,5 +21,8 @@ runs:
           $storageAccountName = "sa$(Get-UniqueString $rg.id)"
           $sa=az storage account create --name $storageAccountName --location $rg.location --resource-group $rg.name --sku Standard_LRS | ConvertFrom-Json
           $sc=az storage container create --name tfstate --account-name $sa.name | ConvertFrom-Json
-          $sc | Out-String
+
+          Write-Output "::set-output name=resourceGroupName::$rg.name"
+          Write-Output "::set-output name=storageAccountName::$sa.name"
+          Write-Output "::set-output name=containerName::$sc.name"
         azPSVersion: "latest"

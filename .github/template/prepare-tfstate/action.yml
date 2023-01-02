@@ -2,9 +2,9 @@ name: prepare-tfstate
 description: "Prepares Terraform state for use in other actions"
 
 outputs:
-  tfstateResourceGroupName:
+  resourceGroupName:
     description: "Name of the resource group that contains the Terraform state"
-    value: ${{ steps.tfstate.outputs.tfstateResourceGroupName }}
+    value: ${{ steps.tfstate.outputs.resourceGroupName }}
   storageAccountName:
     description: "Name of the storage account that contains the Terraform state"
     value: ${{ steps.tfstate.outputs.storageAccountName }}

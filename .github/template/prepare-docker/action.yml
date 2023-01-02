@@ -18,6 +18,6 @@ runs:
     - name: Setup Docker
       uses: docker/login-action@v2
       with:
-        registry: trijssenaar.jfrog.io
-        username: strijssenaar@xpirit.com
-        password: ${{ secrets.DOCKER_APIKEY }}
+        registry: ${{ inputs.registry }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}

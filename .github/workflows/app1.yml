@@ -36,6 +36,7 @@ jobs:
           registry: trijssenaar.jfrog.io
           username: strijssenaar@xpirit.com
           password: ${{ secrets.DOCKER_APIKEY }}
+
       - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }} version ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
         id: build
         run: |

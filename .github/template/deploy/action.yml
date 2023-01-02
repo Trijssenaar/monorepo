@@ -27,7 +27,5 @@ runs:
         terraform validate
 
         terraform init -chdir=.\infra\terraform\deploy\demo\ -input=false -backend-config="resource_group_name=${{ env.RESOURCE_GROUP_NAME }}" -backend-config="storage_account_name=${{ parameters.storageAccountName }}" -backend-config="container_name=${{ parameters.containerName }}" -backend-config="key=${{ parameters.key }}"
-
-        Write-Host "Executing terraform ${{ parameters.command }} ${{ parameters.commandOptions }}..."
-        terraform ${{ parameters.command }} ${{ parameters.commandOptions }}
+        # terraform ${{ parameters.command }} ${{ parameters.commandOptions }}
       shell: pwsh

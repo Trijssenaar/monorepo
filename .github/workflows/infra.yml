@@ -1,0 +1,32 @@
+name: Build app1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - .github/workflows/infra.yml
+      - .github/template/**
+      - infra/**
+  pull_request:
+    branches: ["main"]
+    paths:
+      - .github/workflows/infra.yml
+      - .github/template/**
+      - infra/**
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          allow-no-subscriptions: true

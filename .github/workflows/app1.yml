@@ -19,23 +19,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Build prepare
+        uses: "./.github/template/build-prepare"
         with:
-          fetch-depth: 0
-
-      - name: Prepare GitVersion
-        uses: "./.github/template/prepare-gitversion"
-      - name: Prepare JFrog
-        uses: "./.github/template/prepare-jfrog"
-        with:
-          secret-env-1: ${{ secrets.JF_SECRET_ENV_1 }}
-      - name: Prepare Docker
-        uses: "./.github/template/prepare-docker"
-        with:
-          registry: trijssenaar.jfrog.io
-          username: strijssenaar@xpirit.com
-          password: ${{ secrets.DOCKER_APIKEY }}
+          jfrog-secret-env-1: ${{ secrets.JF_SECRET_ENV_1 }}
+          docker-apikey: ${{ secrets.DOCKER_APIKEY }}
 
       - name: Determine Version
         id: gitversion

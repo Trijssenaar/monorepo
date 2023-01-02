@@ -1,0 +1,33 @@
+name: build-prepare
+description: "Prepares the build environment for use in other actions"
+
+inputs:
+  jfrog-secret-env-1:
+    required: true
+    description: "JFrog secret environment variable 1"
+  docker-apikey:
+    required: true
+    description: "Docker API key"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Prepare GitVersion
+      uses: "./.github/template/prepare-gitversion"
+
+    - name: Prepare JFrog
+      uses: "./.github/template/prepare-jfrog"
+      with:
+        secret-env-1: ${{ secrets.JF_SECRET_ENV_1 }}
+
+    - name: Prepare Docker
+      uses: "./.github/template/prepare-docker"
+      with:
+        registry: trijssenaar.jfrog.io
+        username: strijssenaar@xpirit.com
+        password: ${{ INPUTS.docker-apikey }}

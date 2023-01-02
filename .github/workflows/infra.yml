@@ -26,12 +26,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: azure/login@v1
+      - name: Prepare Azure
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
 
-      - name: Azure CLI script
+      - name: Import environment variables from a file
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          Get-Content -Path $env:ENVIRONMENT >> $Env:GITHUB_ENV
+        shell: pwsh
+        env:
+          ENVIRONMENT: "DEV"
+
+      - name: Create Terraform state storage account
         uses: azure/powershell@v1
         with:
           inlineScript: |

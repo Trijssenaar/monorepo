@@ -1,6 +1,17 @@
 name: prepare-docker
 description: "Prepares Docker for use in other actions"
 
+inputs:
+  registry:
+    required: true
+    description: "Docker registry"
+  username:
+    required: true
+    description: "Docker username"
+  password:
+    required: true
+    description: "Docker password"
+
 runs:
   using: "composite"
   steps:

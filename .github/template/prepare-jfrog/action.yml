@@ -2,7 +2,7 @@ name: prepare-jfrog
 description: "Prepares JFrog for use in other actions"
 
 inputs:
-  jfrog-secret-env-1:
+  secret-env-1:
     required: true
     description: "JFrog secret environment variable 1"
 

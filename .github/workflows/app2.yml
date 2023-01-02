@@ -46,7 +46,7 @@ jobs:
           username: strijssenaar@xpirit.com
           password: ${{ secrets.DOCKER_APIKEY }}
 
-      - name: Build image
+      - name: Build image app2-${{ steps.gitversion.outputs.EscapedBranchName }} version ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
         id: build
         run: |
           $ErrorActionPreference = "Stop"
@@ -58,21 +58,17 @@ jobs:
 
           $hostName='trijssenaar.jfrog.io'
           $folderName='applications-docker-local'
-          $imageName="${application}-${{ steps.gitversion.outputs.SemVer }}"
-          $buildNumber="${{ steps.gitversion.outputs.BuildMetaData }}"
-          if('${{ github.ref }}' -ne 'refs/heads/main'){
-            $buildNumber+='.${{ github.run_number }}'
-          }
-          $fullTag=Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${buildNumber}"
+          $imageName="${application}-${{ steps.gitversion.outputs.EscapedBranchName }}".ToLower()
+          $majorMinorPatchCommits=""
+          $fullTag=
 
-          docker build `
-            --tag ${application}:latest `
-            --tag $fullTag `
+          jf docker build `
+            --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}") `
             ./src/${application}
-          docker push $fullTag
+          jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}")
 
-          $env:JFROG_CLI_BUILD_NAME=${imageName}
-          $env:JFROG_CLI_BUILD_NUMBER=${buildNumber}
+          # $env:JFROG_CLI_BUILD_NAME=${imageName}
+          # $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
           jf rt build-publish
         shell: pwsh
 

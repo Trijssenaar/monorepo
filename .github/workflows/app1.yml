@@ -42,13 +42,6 @@ jobs:
         env:
           JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
 
-      - name: Setup Docker
-        uses: docker/login-action@v2
-        with:
-          registry: trijssenaar.jfrog.io
-          username: strijssenaar@xpirit.com
-          password: ${{ secrets.DOCKER_APIKEY }}
-
       - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }}
         uses: "./.github/template/build-docker"
         with:

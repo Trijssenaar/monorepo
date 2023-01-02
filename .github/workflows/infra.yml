@@ -2,6 +2,7 @@ name: Build infra
 
 permissions:
   id-token: write
+  contents: read
 
 on:
   workflow_dispatch:

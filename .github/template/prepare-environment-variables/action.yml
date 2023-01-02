@@ -2,7 +2,7 @@ name: prepare-environment-variables
 description: "Prepares environment variables for use in other actions"
 
 inputs:
-  environment-name:
+  environment:
     required: true
     description: "Name of the environment to prepare"
 
@@ -13,5 +13,7 @@ runs:
       run: |
         $ErrorActionPreference = 'Stop'
 
-        Get-Content -Path ./.github/workflows/environments/${{ inputs.environment-name }} >> $Env:GITHUB_ENV
+        Get-Content -Path ./.github/workflows/environments/$env:ENVIRONMENT >> $Env:GITHUB_ENV
       shell: pwsh
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}

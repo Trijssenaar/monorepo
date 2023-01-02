@@ -17,5 +17,5 @@ runs:
     - name: Prepare Azure
       uses: "./.github/template/prepare-azure"
 
-    - name: Prepare Azure
+    - name: Prepare Terraform state
       uses: "./.github/template/prepare-tfstate"

@@ -10,7 +10,7 @@ runs:
   using: "composite"
   steps:
     - name: Prepare environment variables
-      uses: "./.github/template/deploy-import"
+      uses: "./.github/template/prepare-environment-variables"
       with:
         environment: ${{ inputs.environment }}
 

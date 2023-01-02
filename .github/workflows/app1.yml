@@ -35,38 +35,45 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.15
 
-      # - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }}
-      #   uses: "./.github/template/build-docker"
-      #   with:
-      #     application-name: app1
-      #     image-name: app1-${{ steps.gitversion.outputs.EscapedBranchName }}
-      #     version: ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+      - name: Setup Docker
+        uses: docker/login-action@v2
+        with:
+          registry: trijssenaar.jfrog.io
+          username: strijssenaar@xpirit.com
+          password: ${{ secrets.DOCKER_APIKEY }}
 
-      - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }} version ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
-        id: build
-        run: |
-          $ErrorActionPreference = "Stop"
+      - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }}
+        uses: "./.github/template/build-docker"
+        with:
+          application-name: app1
+          image-name: app1-${{ steps.gitversion.outputs.EscapedBranchName }}
+          version: ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
 
-          $application="app1"
-          $index = Get-Content ./src/${application}/app/index.html
-          $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${{ steps.gitversion.outputs.FullSemVer }}<!--/Version-->"
-          $index | Set-Content ./src/${application}/app/index.html
+      # - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }} version ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+      #   id: build
+      #   run: |
+      #     $ErrorActionPreference = "Stop"
 
-          $hostName='trijssenaar.jfrog.io'
-          $folderName='applications-docker-local'
-          $imageName="${application}-${{ steps.gitversion.outputs.EscapedBranchName }}".ToLower()
-          $majorMinorPatchCommits=""
-          $fullTag=
+      #     $application="app1"
+      #     $index = Get-Content ./src/${application}/app/index.html
+      #     $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${{ steps.gitversion.outputs.FullSemVer }}<!--/Version-->"
+      #     $index | Set-Content ./src/${application}/app/index.html
 
-          jf docker build `
-            --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}") `
-            ./src/${application}
-          jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}")
+      #     $hostName='trijssenaar.jfrog.io'
+      #     $folderName='applications-docker-local'
+      #     $imageName="${application}-${{ steps.gitversion.outputs.EscapedBranchName }}".ToLower()
+      #     $majorMinorPatchCommits=""
+      #     $fullTag=
 
-          # $env:JFROG_CLI_BUILD_NAME=${imageName}
-          # $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
-          jf rt build-publish
-        shell: pwsh
+      #     jf docker build `
+      #       --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}") `
+      #       ./src/${application}
+      #     jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}")
+
+      #     # $env:JFROG_CLI_BUILD_NAME=${imageName}
+      #     # $env:JFROG_CLI_BUILD_NUMBER=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+      #     jf rt build-publish
+      #   shell: pwsh
 
     outputs:
       MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}

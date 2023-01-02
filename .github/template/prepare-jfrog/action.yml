@@ -14,4 +14,4 @@ runs:
       with:
         version: 2.24.2
       env:
-        JF_ENV_1: ${{ inputs.jfrog-secret-env-1}}
+        JF_ENV_1: ${{ inputs.secret-env-1 }}

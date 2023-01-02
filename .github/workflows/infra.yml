@@ -17,6 +17,7 @@ on:
 
 jobs:
   deploy_DEV:
+    environment: DEV
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,12 +25,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Prepare environment variables
+      - name: Deploy
         uses: "./.github/template/deploy"
         with:
-          environment-name: "DEV"
+          environment: DEV
 
   deploy_TST:
+    environment: TST
     runs-on: ubuntu-latest
     needs:
       - deploy_DEV
@@ -39,7 +41,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Prepare environment variables
+      - name: Deploy
         uses: "./.github/template/deploy"
         with:
-          environment-name: "TST"
+          environment: TST

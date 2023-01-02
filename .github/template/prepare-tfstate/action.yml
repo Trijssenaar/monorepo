@@ -5,6 +5,12 @@ outputs:
   TFSTATE_RESOURCE_GROUP_NAME:
     description: "Name of the resource group that contains the Terraform state"
     value: ${{ steps.tfstate.outputs.TFSTATE_RESOURCE_GROUP_NAME }}
+  TFSTATE_STORAGE_ACCOUNT_NAME:
+    description: "Name of the resource group that contains the Terraform state"
+    value: ${{ steps.tfstate.outputs.TFSTATE_STORAGE_ACCOUNT_NAME }}
+  TFSTATE_CONTAINER_NAME:
+    description: "Name of the resource group that contains the Terraform state"
+    value: ${{ steps.tfstate.outputs.TFSTATE_CONTAINER_NAME }}
 
 runs:
   using: "composite"

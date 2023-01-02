@@ -1,3 +1,5 @@
+name: Build infra
+
 on:
   workflow_dispatch:
   push:
@@ -27,4 +29,23 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          allow-no-subscriptions: true
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            $ErrorActionPreference = 'Stop'
+
+            $resourceGroupName="myResourceGroup"
+            $location="westeurope"
+
+            function Get-UniqueString ([string]$id, $length=13)
+            {
+              $hashArray = (new-object System.Security.Cryptography.SHA512Managed).ComputeHash($id.ToCharArray())
+              -join ($hashArray[1..$length] | ForEach-Object { [char]($_ % 26 + [byte][char]'a') })
+            }
+
+            $rg=(az group create --name $resourceGroupName --location $location) | ConvertFrom-Json
+            $storageAccountName = "sa$(Get-UniqueString $rg.id)"
+            $sa=(az storage account create --name $storageAccountName --location $rg.location --resource-group $rg.name --sku Standard_LRS) | ConvertFrom-Json
+            $sa

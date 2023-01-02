@@ -26,28 +26,10 @@ jobs:
 
       - name: Prepare GitVersion
         uses: "./.github/template/prepare-gitversion"
-
-      # - name: Install GitVersion
-      #   uses: gittools/actions/gitversion/setup@v0.9.15
-      #   with:
-      #     versionSpec: "5.x"
-      # - name: Determine Version
-      #   id: gitversion
-      #   uses: gittools/actions/gitversion/execute@v0.9.15
-
-      - name: Setup JFrog
-        uses: jfrog/setup-jfrog-cli@v3
-        with:
-          version: 2.24.2
-        env:
-          JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
-
-      - name: Setup Docker
-        uses: docker/login-action@v2
-        with:
-          registry: trijssenaar.jfrog.io
-          username: strijssenaar@xpirit.com
-          password: ${{ secrets.DOCKER_APIKEY }}
+      - name: Prepare JFrog
+        uses: "./.github/template/prepare-jfrog"
+      - name: Prepare Docker
+        uses: "./.github/template/prepare-docker"
 
       - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }} version ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
         id: build

@@ -1,0 +1,12 @@
+name: prepare-docker
+description: "Prepares Docker for use in other actions"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Docker
+      uses: docker/login-action@v2
+      with:
+        registry: trijssenaar.jfrog.io
+        username: strijssenaar@xpirit.com
+        password: ${{ secrets.DOCKER_APIKEY }}

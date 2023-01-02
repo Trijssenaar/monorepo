@@ -50,4 +50,4 @@ jobs:
             $storageAccountName = "sa$(Get-UniqueString $rg.id)"
             $sa=(az storage account create --name $storageAccountName --location $rg.location --resource-group $rg.name --sku Standard_LRS) | ConvertFrom-Json
             $sa
-          shell: pwsh
+          azPSVersion: "latest"

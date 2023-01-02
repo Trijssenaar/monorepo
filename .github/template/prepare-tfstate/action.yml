@@ -1,0 +1,24 @@
+name: prepare-tfstate
+description: "Prepares Terraform state for use in other actions"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare Terraform state
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          $ErrorActionPreference = 'Stop'
+
+          function Get-UniqueString ([string]$id, $length=13)
+          {
+            $hashArray = (new-object System.Security.Cryptography.SHA512Managed).ComputeHash($id.ToCharArray())
+            -join ($hashArray[1..$length] | ForEach-Object { [char]($_ % 26 + [byte][char]'a') })
+          }
+
+          $rg=az group create --name $env:RESOURCE_GROUP_NAME --location $env:LOCATION | ConvertFrom-Json
+          $storageAccountName = "sa$(Get-UniqueString $rg.id)"
+          $sa=az storage account create --name $storageAccountName --location $rg.location --resource-group $rg.name --sku Standard_LRS | ConvertFrom-Json
+          $sc=az storage container create --name tfstate --account-name $sa.name | ConvertFrom-Json
+          $sc | Out-String
+        azPSVersion: "latest"

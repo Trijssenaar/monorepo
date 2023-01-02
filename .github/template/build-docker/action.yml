@@ -1,0 +1,40 @@
+name: build-prepare
+description: "Prepares the build environment for use in other actions"
+
+inputs:
+  application-name:
+    required: true
+    description: "Name of the application to build"
+  image-name:
+    required: true
+    description: "Name of the image to build"
+  version:
+    required: true
+    description: "Version of the image to build"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build image ${{ inputs.image-name }} version ${{ inputs.version }}
+      id: build
+      run: |
+        $ErrorActionPreference = "Stop"
+
+        $indexFilePath="./src/${{ inputs.application-name }}/app/index.html"
+        $index = Get-Content -Path $indexFilePath
+        $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${{ inputs.version }}<!--/Version-->"
+        $index | Set-Content -Path $indexFilePath
+
+        $hostName='trijssenaar.jfrog.io'
+        $folderName='applications-docker-local'
+        $imageName="${{ inputs.image-name }}".ToLower()
+
+        jf docker build `
+          --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ inputs.version }}") `
+          ./src/${{ inputs.application-name }}
+        jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ inputs.version }}")
+
+        # $env:JFROG_CLI_BUILD_NAME=${imageName}
+        # $env:JFROG_CLI_BUILD_NUMBER=${{ inputs.version }}
+        jf rt build-publish
+      shell: pwsh

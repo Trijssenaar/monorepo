@@ -18,6 +18,8 @@ runs:
     - uses: ./.github/template/prepare-tfstate
 
     - uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.3.6
 
     - name: Terraform Build
       run: |

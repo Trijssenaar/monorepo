@@ -7,7 +7,7 @@ terraform {
   }
   backend "azurerm" {}
 
-  required_version = "1.3.4"
+  required_version = "1.3.6"
 }
 
 provider "azurerm" {

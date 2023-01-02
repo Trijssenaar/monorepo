@@ -1,6 +1,11 @@
 name: prepare-jfrog
 description: "Prepares JFrog for use in other actions"
 
+inputs:
+  jfrog-secret-env-1:
+    required: true
+    description: "JFrog secret environment variable 1"
+
 runs:
   using: "composite"
   steps:
@@ -9,4 +14,4 @@ runs:
       with:
         version: 2.24.2
       env:
-        JF_ENV_1: ${{ secrets.JF_SECRET_ENV_1 }}
+        JF_ENV_1: ${{ inputs.jfrog-secret-env-1}}

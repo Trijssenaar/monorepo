@@ -28,4 +28,8 @@ runs:
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend=false
         terraform validate
 
+        Write-Host "${{ steps.tfstate.outputs.resourceGroupName }}"
+        Write-Host "${{ steps.tfstate.outputs.storageAccountName }}"
+        Write-Host "${{ steps.tfstate.outputs.containerName }}"
+
       shell: pwsh

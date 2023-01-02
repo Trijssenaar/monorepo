@@ -1,6 +1,17 @@
 name: prepare-tfstate
 description: "Prepares Terraform state for use in other actions"
 
+outputs:
+  tfstate-resource-group-name:
+    description: "Name of the resource group containing the Terraform state"
+    value: ${{ env.TFSTATE_RESOURCE_GROUP_NAME }}
+  tfstate-storage-account-name:
+    description: "Name of the storage account containing the Terraform state"
+    value: ${{ env.TFSTATE_STORAGE_ACCOUNT_NAME }}
+  tfstate-container-name:
+    description: "Name of the container containing the Terraform state"
+    value: ${{ env.TFSTATE_CONTAINER_NAME }}
+
 runs:
   using: "composite"
   steps:
@@ -26,8 +37,11 @@ runs:
 
           echo "TFSTATE_RESOURCE_GROUP_NAME=$($rg.name)"
           echo "TFSTATE_RESOURCE_GROUP_NAME=$($rg.name)" >> $GITHUB_ENV
+          echo "TFSTATE_RESOURCE_GROUP_NAME=$($rg.name)" >> $GITHUB_OUTPUT
           echo "TFSTATE_STORAGE_ACCOUNT_NAME=$($sa.name)"
           echo "TFSTATE_STORAGE_ACCOUNT_NAME=$($sa.name)" >> $GITHUB_ENV
+          echo "TFSTATE_STORAGE_ACCOUNT_NAME=$($sa.name)" >> $GITHUB_OUTPUT
           echo "TFSTATE_CONTAINER_NAME=$containerName"
           echo "TFSTATE_CONTAINER_NAME=$containerName" >> $GITHUB_ENV
+          echo "TFSTATE_CONTAINER_NAME=$containerName" >> $GITHUB_OUTPUT
         azPSVersion: "latest"

@@ -34,3 +34,7 @@ runs:
         Write-Host "containerName=${{ env.TFSTATE_CONTAINER_NAME }}"
 
       shell: pwsh
+      env:
+        TFSTATE_RESOURCE_GROUP_NAME: ${{ steps.prepare-tfstate.outputs.tfstate-resource-group-name }}
+        TFSTATE_STORAGE_ACCOUNT_NAME: ${{ steps.prepare-tfstate.outputs.tfstate-storage-account-name }}
+        TFSTATE_CONTAINER_NAME: ${{ steps.prepare-tfstate.outputs.tfstate-container-name }}

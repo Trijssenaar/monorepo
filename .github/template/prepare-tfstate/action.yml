@@ -22,7 +22,7 @@ runs:
           $sa=az storage account create --name $storageAccountName --location $rg.location --resource-group $rg.name --sku Standard_LRS | ConvertFrom-Json
           $sc=az storage container create --name tfstate --account-name $sa.name | ConvertFrom-Json
 
-          Write-Output "::set-output name=resourceGroupName::$rg.name"
-          Write-Output "::set-output name=storageAccountName::$sa.name"
-          Write-Output "::set-output name=containerName::$sc.name"
+          Write-Output "resourceGroupName=$rg.name" >> $GITHUB_OUTPUT
+          Write-Output "storageAccountName=$sa.name" >> $GITHUB_OUTPUT
+          Write-Output "containerName=$sc.name" >> $GITHUB_OUTPUT
         azPSVersion: "latest"

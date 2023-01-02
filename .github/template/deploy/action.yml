@@ -9,13 +9,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Prepare environment variables
-      uses: "./.github/template/prepare-environment-variables"
+    - uses: "./.github/template/prepare-environment-variables"
       with:
         environment: ${{ inputs.environment }}
 
-    - name: Prepare Azure
-      uses: "./.github/template/prepare-azure"
+    - uses: "./.github/template/prepare-azure"
 
-    - name: Prepare Terraform state
-      uses: "./.github/template/prepare-tfstate"
+    - uses: "./.github/template/prepare-tfstate"

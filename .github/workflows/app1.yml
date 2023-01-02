@@ -37,6 +37,10 @@ jobs:
           username: strijssenaar@xpirit.com
           password: ${{ secrets.DOCKER_APIKEY }}
 
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.15
+
       - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }} version ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
         id: build
         run: |

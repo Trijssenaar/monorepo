@@ -16,48 +16,28 @@ on:
       - infra/**
 
 jobs:
-  build:
-    name: Build
+  deploy_DEV:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Prepare Azure
-        uses: azure/login@v1
+      - name: Prepare environment variables
+        uses: "./.github/template/deploy"
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
+          environment-name: "DEV"
 
-      - name: Import environment variables from a file
-        run: |
-          $ErrorActionPreference = 'Stop'
-
-          Get-Content -Path ./.github/workflows/environments/$env:ENVIRONMENT >> $Env:GITHUB_ENV
-        shell: pwsh
-        env:
-          ENVIRONMENT: "DEV"
-
-      - name: Create Terraform state storage account
-        uses: azure/powershell@v1
+  deploy_TST:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          inlineScript: |
-            $ErrorActionPreference = 'Stop'
+          fetch-depth: 0
 
-            $resourceGroupName="myResourceGroup"
-            $location="westeurope"
-
-            function Get-UniqueString ([string]$id, $length=13)
-            {
-              $hashArray = (new-object System.Security.Cryptography.SHA512Managed).ComputeHash($id.ToCharArray())
-              -join ($hashArray[1..$length] | ForEach-Object { [char]($_ % 26 + [byte][char]'a') })
-            }
-
-            $rg=(az group create --name $resourceGroupName --location $location) | ConvertFrom-Json
-            $storageAccountName = "sa$(Get-UniqueString $rg.id)"
-            $sa=(az storage account create --name $storageAccountName --location $rg.location --resource-group $rg.name --sku Standard_LRS) | ConvertFrom-Json
-            $sa
-          azPSVersion: "latest"
+      - name: Prepare environment variables
+        uses: "./.github/template/deploy"
+        with:
+          environment-name: "TST"

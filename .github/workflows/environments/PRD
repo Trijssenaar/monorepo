@@ -1,1 +1,2 @@
 RESOURCE_GROUP_NAME='demo-prd-tfstate-rg'
+LOCATION='westeurope'

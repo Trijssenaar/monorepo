@@ -1,1 +1,2 @@
 RESOURCE_GROUP_NAME='demo-acc-tfstate-rg'
+LOCATION='westeurope'

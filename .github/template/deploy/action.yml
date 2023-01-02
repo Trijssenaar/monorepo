@@ -1,0 +1,39 @@
+name: deploy
+description: "Deploys an application to an environment"
+
+inputs:
+  environment-name:
+    required: true
+    description: "Name of the environment to deploy to"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare environment variables
+      uses: "./.github/template/deploy-import"
+      with:
+        environment: ${{ inputs.environment-name }}
+
+    - name: Prepare Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    - name: Create Terraform state storage account
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          $ErrorActionPreference = 'Stop'
+
+          function Get-UniqueString ([string]$id, $length=13)
+          {
+            $hashArray = (new-object System.Security.Cryptography.SHA512Managed).ComputeHash($id.ToCharArray())
+            -join ($hashArray[1..$length] | ForEach-Object { [char]($_ % 26 + [byte][char]'a') })
+          }
+
+          $rg=(az group create --name $env:RESOURCE_GROUP_NAME --location $env:LOCATION) | ConvertFrom-Json
+          $storageAccountName = "sa$(Get-UniqueString $rg.id)"
+          $sa=(az storage account create --name $storageAccountName --location $rg.location --resource-group $rg.name --sku Standard_LRS) | ConvertFrom-Json
+          $sa
+        azPSVersion: "latest"

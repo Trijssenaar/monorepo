@@ -6,6 +6,7 @@ on:
     branches: ["main"]
     paths:
       - .github/workflows/app1.yml
+      - .github/template/**
       - src/app1/**
   pull_request:
     branches: ["main"]

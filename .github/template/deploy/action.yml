@@ -38,7 +38,7 @@ runs:
 
         dir env:
 
-        az login --service-principal -u $env:AZURE_CLIENT_ID -p $env:AZURE_CLIENT_SECRET --tenant $env:AZURE_TENANT_ID
+        az login -u $env:AZURE_CLIENT_ID -p $env:AZURE_CLIENT_SECRET --tenant $env:AZURE_TENANT_ID
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${resourceGroupName}" -backend-config="storage_account_name=${storageAccountName}" -backend-config="container_name=${containerName}" -backend-config="key=$env:RESOURCE_GROUP_NAME"
 
       shell: pwsh

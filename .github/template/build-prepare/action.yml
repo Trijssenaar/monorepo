@@ -18,7 +18,7 @@ runs:
     - name: Prepare JFrog
       uses: "./.github/template/prepare-jfrog"
       with:
-        secret-env-1: ${{ secrets.JF_SECRET_ENV_1 }}
+        secret-env-1: ${{ inputs.jfrog-secret-env-1 }}
 
     - name: Prepare Docker
       uses: "./.github/template/prepare-docker"

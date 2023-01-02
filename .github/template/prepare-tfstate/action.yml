@@ -1,17 +1,6 @@
 name: prepare-tfstate
 description: "Prepares Terraform state for use in other actions"
 
-outputs:
-  resourceGroupName:
-    description: "Name of the resource group containing the Terraform state"
-    value: ${{ steps.tfstate.outputs.resourceGroupName }}
-  storageAccountName:
-    description: "Name of the storage account containing the Terraform state"
-    value: ${{ steps.tfstate.outputs.storageAccountName }}
-  containerName:
-    description: "Name of the container containing the Terraform state"
-    value: ${{ steps.tfstate.outputs.containerName }}
-
 runs:
   using: "composite"
   steps:

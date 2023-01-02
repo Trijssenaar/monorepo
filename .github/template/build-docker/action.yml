@@ -28,11 +28,12 @@ runs:
         $hostName='trijssenaar.jfrog.io'
         $folderName='applications-docker-local'
         $imageName="${{ inputs.image-name }}".ToLower()
+        $imageTagName="${imageName}:${{ inputs.version }}"
 
         jf docker build `
-          --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ inputs.version }}") `
+          --tag $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageTagName}") `
           ./src/${{ inputs.application-name }}
-        jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageName}:${{ inputs.version }}")
+        jf docker push $(Join-Path -Path $hostName -ChildPath $folderName | Join-Path -ChildPath "${imageTagName}")
 
         # $env:JFROG_CLI_BUILD_NAME=${imageName}
         # $env:JFROG_CLI_BUILD_NUMBER=${{ inputs.version }}

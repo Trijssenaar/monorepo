@@ -51,7 +51,7 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
 
-          $application="app2"
+          $application="app1"
           $index = Get-Content ./src/${application}/app/index.html
           $index = $index -replace '(<!--Version-->)(.*)(<!--\/Version-->)', "<!--Version-->${{ steps.gitversion.outputs.FullSemVer }}<!--/Version-->"
           $index | Set-Content ./src/${application}/app/index.html

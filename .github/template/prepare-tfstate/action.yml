@@ -2,14 +2,14 @@ name: prepare-tfstate
 description: "Prepares Terraform state for use in other actions"
 
 outputs:
-  TFSTATE_RESOURCE_GROUP_NAME:
+  tfstateResourceGroupName:
     description: "Name of the resource group that contains the Terraform state"
-    value: ${{ steps.tfstate.outputs.TFSTATE_RESOURCE_GROUP_NAME }}
+    value: ${{ steps.tfstate.outputs.tfstateResourceGroupName }}
   TFSTATE_STORAGE_ACCOUNT_NAME:
-    description: "Name of the resource group that contains the Terraform state"
+    description: "Name of the storage account that contains the Terraform state"
     value: ${{ steps.tfstate.outputs.TFSTATE_STORAGE_ACCOUNT_NAME }}
   TFSTATE_CONTAINER_NAME:
-    description: "Name of the resource group that contains the Terraform state"
+    description: "Name of the container that contains the Terraform state"
     value: ${{ steps.tfstate.outputs.TFSTATE_CONTAINER_NAME }}
 
 runs:
@@ -35,10 +35,7 @@ runs:
           $sa=az storage account create --name $storageAccountName --location $rg.location --resource-group $rg.name --sku Standard_LRS | ConvertFrom-Json
           az storage container create --name $containerName --account-name $sa.name --auth-mode login | ConvertFrom-Json
 
-          echo "TFSTATE_RESOURCE_GROUP_NAME=$($rg.name)"
-          echo "TFSTATE_RESOURCE_GROUP_NAME=$($rg.name)" >> $env:GITHUB_OUTPUT
-          echo "TFSTATE_STORAGE_ACCOUNT_NAME=$($sa.name)"
-          echo "TFSTATE_STORAGE_ACCOUNT_NAME=$($sa.name)" >> $env:GITHUB_OUTPUT
-          echo "TFSTATE_CONTAINER_NAME=$containerName"
-          echo "TFSTATE_CONTAINER_NAME=$containerName" >> $env:GITHUB_OUTPUT
+          echo "resourceGroupName=$($rg.name)" >> $env:GITHUB_OUTPUT
+          echo "storageAccountName=$($sa.name)" >> $env:GITHUB_OUTPUT
+          echo "containerName=$containerName" >> $env:GITHUB_OUTPUT
         azPSVersion: "latest"

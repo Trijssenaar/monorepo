@@ -1,6 +1,11 @@
 name: prepare-tfstate
 description: "Prepares Terraform state for use in other actions"
 
+outputs:
+  TFSTATE_RESOURCE_GROUP_NAME:
+    description: "Name of the resource group that contains the Terraform state"
+    value: ${{ steps.tfstate.outputs.TFSTATE_RESOURCE_GROUP_NAME }}
+
 runs:
   using: "composite"
   steps:

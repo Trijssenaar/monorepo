@@ -29,8 +29,7 @@ runs:
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend=false
         terraform validate
 
-        Write-Host "resourceGroupName=${{ outputs.TFSTATE_RESOURCE_GROUP_NAME }}"
-        Write-Host "storageAccountName=${{ outputs.TFSTATE_STORAGE_ACCOUNT_NAME }}"
-        Write-Host "containerName=${{ outputs.TFSTATE_CONTAINER_NAME }}"
+        Write-Host "tfstate=${{ steps.tfstate.outputs.TFSTATE_RESOURCE_GROUP_NAME }}"
+        Write-Host "prepare-tfstate=${{ steps.prepare-tfstate.outputs.TFSTATE_RESOURCE_GROUP_NAME }}"
 
       shell: pwsh

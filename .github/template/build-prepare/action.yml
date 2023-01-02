@@ -12,16 +12,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Prepare GitVersion
-      uses: "./.github/template/prepare-gitversion"
+    - uses: "./.github/template/prepare-gitversion"
 
-    - name: Prepare JFrog
-      uses: "./.github/template/prepare-jfrog"
+    - uses: "./.github/template/prepare-jfrog"
       with:
         secret-env-1: ${{ inputs.jfrog-secret-env-1 }}
 
-    - name: Prepare Docker
-      uses: "./.github/template/prepare-docker"
+    - uses: "./.github/template/prepare-docker"
       with:
         registry: trijssenaar.jfrog.io
         username: strijssenaar@xpirit.com

@@ -9,10 +9,17 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: "./.github/template/prepare-environment-variables"
+    - uses: ./.github/template/prepare-environment-variables
       with:
         environment: ${{ inputs.environment }}
 
-    - uses: "./.github/template/prepare-azure"
+    - uses: ./.github/template/prepare-azure
 
-    - uses: "./.github/template/prepare-tfstate"
+    - uses: ./.github/template/prepare-tfstate
+
+    - uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform fmt
+      if: fmt
+      run: terraform fmt -check
+      shell: pwsh

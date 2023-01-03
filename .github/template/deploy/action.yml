@@ -58,4 +58,4 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.prepare-tfstate.outputs.resourceGroupName }}
-        path: tfplan
+        path: infra/terraform/deploy/demo/tfplan

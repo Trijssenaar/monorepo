@@ -35,8 +35,8 @@ runs:
 
     - run: |
         # Terraform Plan
-        terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
-        terraform -chdir=infra/terraform/deploy/demo/ plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="tfplan" -input=false
+        terraform -chdir="infra/terraform/deploy/demo/" init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
+        terraform -chdir="infra/terraform/deploy/demo/" plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="tfplan" -input=false
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
@@ -58,9 +58,9 @@ runs:
 
     - run: |
         # Terraform Execute
-        ls -la artifacts/${{ inputs.environment }}.tfplan
+        ls -la "artifacts/${{ inputs.environment }}.tfplan"
         # terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
-        terraform -chdir=artifacts/${{ inputs.environment }}.tfplan apply -input=false tfplan
+        terraform -chdir="artifacts/${{ inputs.environment }}.tfplan" apply -input=false tfplan
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}

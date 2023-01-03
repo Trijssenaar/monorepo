@@ -1,5 +1,5 @@
-name: deploy
-description: "Deploys an application to an environment"
+name: deploy-terraform
+description: "Deploys the terraform infrastructure"
 
 inputs:
   environment:
@@ -25,21 +25,6 @@ runs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.3.6
-
-    # Build
-
-    - run: |
-        # Terraform Build
-        terraform version
-        terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend=false
-        terraform validate
-      shell: pwsh
-
-    - name: Store Terraform
-      uses: actions/upload-artifact@v3
-      with:
-        name: "Terraform"
-        path: infra/terraform/
 
     # Plan
 

@@ -1,2 +1,2 @@
-RESOURCE_GROUP_NAME = "demo-prd-rg"
-LOCATION            = "westeurope"
+resource_group_name = "demo-prd-rg"
+location            = "westeurope"

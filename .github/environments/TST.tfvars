@@ -1,2 +1,2 @@
-RESOURCE_GROUP_NAME = "demo-tst-rg"
-LOCATION            = "westeurope"
+resource_group_name = "demo-tst-rg"
+location            = "westeurope"

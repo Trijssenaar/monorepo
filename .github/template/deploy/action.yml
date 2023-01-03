@@ -26,6 +26,8 @@ runs:
       with:
         terraform_version: 1.3.6
 
+    # Build
+
     - run: |
         # Terraform Build
         terraform version
@@ -38,6 +40,8 @@ runs:
       with:
         name: "Terraform"
         path: infra/terraform/
+
+    # Plan
 
     - name: Retrieve Terraform
       uses: actions/download-artifact@v3
@@ -63,6 +67,8 @@ runs:
         name: "${{ inputs.environment }}.tfplan"
         path: ${{ inputs.environment }}.tfplan
 
+    # Apply
+
     - name: Retrieve Terraform
       uses: actions/download-artifact@v3
       with:
@@ -77,6 +83,9 @@ runs:
 
     - run: |
         # Terraform Apply
+        ls -la
+        ls -la artifacts
+        ls -la artifacts//${{ inputs.environment }}.tfplan
         terraform -chdir="artifacts/terraform/deploy/demo/" apply -input=false artifacts/${{ inputs.environment }}.tfplan/${{ inputs.environment }}.tfplan
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}

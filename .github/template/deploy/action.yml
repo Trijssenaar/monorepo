@@ -37,6 +37,7 @@ runs:
     - name: Create Terraform Plan
       run: |
         # Create Terraform Plan
+        $ErrorActionPreference = "Stop"
         $resourceGroupName="${{ steps.prepare-tfstate.outputs.resourceGroupName }}"
         $storageAccountName="${{ steps.prepare-tfstate.outputs.storageAccountName }}"
         $containerName="${{ steps.prepare-tfstate.outputs.containerName }}"

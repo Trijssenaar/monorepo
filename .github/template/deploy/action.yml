@@ -58,7 +58,7 @@ runs:
 
     - run: |
         # Terraform Execute
-        ls -R artifacts
+        ls -la artifacts
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
         terraform -chdir=infra/terraform/deploy/demo/ apply -input=false tfplan
       env:

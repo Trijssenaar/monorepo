@@ -47,7 +47,7 @@ runs:
         $env:ARM_ACCESS_KEY=$(az storage account keys list --resource-group ${resourceGroupName} --account-name $storageAccountName --query '[0].value' -o tsv)
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${resourceGroupName}" -backend-config="storage_account_name=${storageAccountName}" -backend-config="container_name=${containerName}" -backend-config="key=$env:RESOURCE_GROUP_NAME"
         terraform plan -h
-        terraform -chdir=infra/terraform/deploy/demo/ plan -var-file="./.github/environments/${{ inputs.environment }}.tfvars" -out="tfplan"
+        terraform -chdir=infra/terraform/deploy/demo/ plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="tfplan"
       shell: pwsh
 
     - name: Store Terraform Plan as Artifact

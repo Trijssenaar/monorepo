@@ -33,10 +33,22 @@ runs:
         terraform validate
       shell: pwsh
 
+    - name: Store Terraform
+      uses: actions/upload-artifact@v3
+      with:
+        name: "Terraform"
+        path: infra/terraform/
+
+    - name: Retrieve Terraform
+      uses: actions/download-artifact@v3
+      with:
+        name: "Terraform"
+        path: artifacts/terraform
+
     - run: |
         # Terraform Plan
-        terraform -chdir="infra/terraform/deploy/demo/" init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
-        terraform -chdir="infra/terraform/deploy/demo/" plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="tfplan" -input=false
+        terraform -chdir="artifacts/terraform/deploy/demo/" init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
+        terraform -chdir="artifacts/terraform/deploy/demo/" plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="$PWD/${{ inputs.environment }}.tfplan" -input=false
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
@@ -48,7 +60,13 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: "${{ inputs.environment }}.tfplan"
-        path: infra/terraform/deploy/demo/tfplan
+        path: $PWD/${{ inputs.environment }}.tfplan
+
+    - name: Retrieve Terraform
+      uses: actions/download-artifact@v3
+      with:
+        name: "Terraform"
+        path: artifacts/terraform
 
     - name: Retrieve Terraform Plan
       uses: actions/download-artifact@v3
@@ -57,10 +75,8 @@ runs:
         path: artifacts/${{ inputs.environment }}.tfplan
 
     - run: |
-        # Terraform Execute
-        ls -la "artifacts/${{ inputs.environment }}.tfplan"
-        # terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
-        terraform -chdir="artifacts/${{ inputs.environment }}.tfplan" apply -input=false tfplan
+        # Terraform Apply
+        terraform -chdir="artifacts/terraform/deploy/demo/" apply -input=false artifacts/${{ inputs.environment }}.tfplan/${{ inputs.environment }}.tfplan
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}

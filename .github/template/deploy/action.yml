@@ -51,7 +51,6 @@ runs:
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${resourceGroupName}" -backend-config="storage_account_name=${storageAccountName}" -backend-config="container_name=${containerName}" -backend-config="key=${{ inputs.environment }}.tfstate"
         terraform -chdir=infra/terraform/deploy/demo/ plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="tfplan" -input=false
       shell: pwsh
-      with:
 
     - name: Store Terraform Plan as Artifact
       uses: actions/upload-artifact@v3

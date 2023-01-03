@@ -34,6 +34,16 @@ runs:
         terraform validate
       shell: pwsh
 
+    - name: Terraform Init
+      id: init
+      run: terraform init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
+      env:
+        ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: "true"
+      shell: bash
+
     - name: Create Terraform Plan
       run: |
         # Create Terraform Plan
@@ -47,7 +57,7 @@ runs:
         $env:ARM_TENANT_ID=$env:AZURE_TENANT_ID
         $env:ARM_CLIENT_ID=$env:AZURE_CLIENT_ID
         $env:ARM_SUBSCRIPTION_ID=$env:AZURE_SUBSCRIPTION_ID
-        terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${resourceGroupName}" -backend-config="storage_account_name=${storageAccountName}" -backend-config="container_name=${containerName}" -backend-config="key=${{ inputs.environment }}.tfstate"
+        # terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${resourceGroupName}" -backend-config="storage_account_name=${storageAccountName}" -backend-config="container_name=${containerName}" -backend-config="key=${{ inputs.environment }}.tfstate"
         terraform -chdir=infra/terraform/deploy/demo/ plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="tfplan" -input=false
       shell: pwsh
 

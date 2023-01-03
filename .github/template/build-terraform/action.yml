@@ -1,0 +1,33 @@
+name: build-terraform
+description: "Builds the terraform infrastructure"
+
+inputs:
+  terraformPath:
+    required: true
+    description: "Path to the terraform files"
+    default: "infra/terraform"
+  terraformDeployPath:
+    required: true
+    description: "Path to the terraform files"
+    default: "deploy/demo"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.3.6
+
+    - name: Terraform Build
+      run: |
+        terraform version
+        terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformDeployPath }}/ init -input=false -backend=false
+        terraform validate
+      shell: pwsh
+
+    - name: Store Terraform
+      uses: actions/upload-artifact@v3
+      with:
+        name: "Terraform"
+        path: ${{ inputs.terraformPath }}

@@ -1,5 +1,5 @@
-name: build-prepare
-description: "Prepares the build environment for use in other actions"
+name: build-docker
+description: "Builds a docker image"
 
 inputs:
   application-name:

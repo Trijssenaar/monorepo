@@ -61,7 +61,7 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: "${{ inputs.environment }}.tfplan"
-        path: $PWD/${{ inputs.environment }}.tfplan
+        path: ${{ inputs.environment }}.tfplan
 
     - name: Retrieve Terraform
       uses: actions/download-artifact@v3

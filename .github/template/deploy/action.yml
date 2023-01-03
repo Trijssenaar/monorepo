@@ -42,7 +42,7 @@ runs:
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
         ARM_USE_OIDC: "true"
-      shell: pwsh
+      shell: bash
 
     - run: |
         # Terraform Plan
@@ -52,7 +52,7 @@ runs:
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
         ARM_USE_OIDC: "true"
-      shell: pwsh
+      shell: bash
 
     - name: Store Terraform Plan as Artifact
       uses: actions/upload-artifact@v3

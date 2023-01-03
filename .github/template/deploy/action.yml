@@ -54,13 +54,13 @@ runs:
       uses: actions/download-artifact@v3
       with:
         name: "${{ inputs.environment }}.tfplan"
-        path: artifacts/tfplan
+        path: artifacts/${{ inputs.environment }}.tfplan
 
     - run: |
         # Terraform Execute
-        ls -la artifacts/tfplan
-        terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
-        terraform -chdir=artifacts/tfplan apply -input=false tfplan
+        ls -la artifacts/${{ inputs.environment }}.tfplan
+        # terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
+        terraform -chdir=artifacts/${{ inputs.environment }}.tfplan apply -input=false tfplan
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}

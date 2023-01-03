@@ -27,15 +27,24 @@ runs:
 
     - name: Terraform Build
       run: |
-        $ErrorActionPreference = 'Stop'
         terraform version
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend=false
         terraform validate
+      shell: pwsh
 
+    - name: Create Terraform Plan
+      run: |
         $resourceGroupName="${{ steps.prepare-tfstate.outputs.resourceGroupName }}"
         $storageAccountName="${{ steps.prepare-tfstate.outputs.storageAccountName }}"
         $containerName="${{ steps.prepare-tfstate.outputs.containerName }}"
 
         $env:ARM_ACCESS_KEY=$(az storage account keys list --resource-group ${resourceGroupName} --account-name $storageAccountName --query '[0].value' -o tsv)
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${resourceGroupName}" -backend-config="storage_account_name=${storageAccountName}" -backend-config="container_name=${containerName}" -backend-config="key=$env:RESOURCE_GROUP_NAME"
+        terraform plan -out=tfplan
       shell: pwsh
+
+    - name: Store Terraform Plan as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.prepare-tfstate.outputs.resourceGroupName }}
+        path: tfplan

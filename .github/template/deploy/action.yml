@@ -41,7 +41,7 @@ runs:
         $storageAccountName="${{ steps.prepare-tfstate.outputs.storageAccountName }}"
         $containerName="${{ steps.prepare-tfstate.outputs.containerName }}"
 
-        $env:ARM_ACCESS_KEY=$(az storage account keys list --resource-group ${resourceGroupName} --account-name ${storageAccountName} --query '[0].value' -o tsv)
+        # $env:ARM_ACCESS_KEY=$(az storage account keys list --resource-group ${resourceGroupName} --account-name ${storageAccountName} --query '[0].value' -o tsv)
         terraform -chdir=infra/terraform/deploy/demo/ init -input=false -backend-config="resource_group_name=${resourceGroupName}" -backend-config="storage_account_name=${storageAccountName}" -backend-config="container_name=${containerName}" -backend-config="key=${{ inputs.environment }}.tfstate"
         terraform -chdir=infra/terraform/deploy/demo/ plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="tfplan" -input=false
       shell: pwsh

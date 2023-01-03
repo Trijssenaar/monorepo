@@ -24,13 +24,11 @@ jobs:
     environment: DEV
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Deploy
-        uses: "./.github/template/deploy"
+      - uses: "./.github/template/deploy"
         with:
           environment: DEV
 
@@ -40,12 +38,10 @@ jobs:
     needs:
       - deploy_DEV
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Deploy
-        uses: "./.github/template/deploy"
+      - uses: "./.github/template/deploy"
         with:
           environment: TST

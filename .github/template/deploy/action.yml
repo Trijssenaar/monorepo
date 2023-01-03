@@ -83,9 +83,6 @@ runs:
 
     - run: |
         # Terraform Apply
-        ls -la
-        ls -la artifacts
-        ls -la artifacts//${{ inputs.environment }}.tfplan
         terraform -chdir="artifacts/terraform/deploy/demo/" apply -input=false $PWD/artifacts/${{ inputs.environment }}.tfplan/${{ inputs.environment }}.tfplan
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}

@@ -8,7 +8,7 @@ runs:
       uses: azure/login@v1
       with:
         client-id: ${{ env.AZURE_CLIENT_ID }}
-        client-secret: ${{ env.AZURE_CLIENT_SECRET }}
+        # client-secret: ${{ env.AZURE_CLIENT_SECRET }}
         tenant-id: ${{ env.AZURE_TENANT_ID }}
         subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true

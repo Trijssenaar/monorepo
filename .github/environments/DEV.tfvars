@@ -1,2 +1,2 @@
-resource_group_name = "demo-dev-rg"
-location            = "westeurope"
+environment = "DEV"
+location    = "westeurope"

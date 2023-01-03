@@ -20,7 +20,8 @@ provider "azurerm" {
 }
 
 locals {
-  resource_group_name = var.resource_group_name
+  environment         = var.environment
+  resource_group_name = "demo-${lower(var.environment)}-rg"
   location            = var.location
 }
 

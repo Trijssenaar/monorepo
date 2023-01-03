@@ -1,6 +1,6 @@
-variable "resource_group_name" {
+variable "environment" {
   type        = string
-  description = "The name of the resource group to create."
+  description = "The environment to deploy into, e.g. DEV, TST, ACC, PRD, etc."
 }
 
 variable "location" {

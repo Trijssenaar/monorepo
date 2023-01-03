@@ -11,7 +11,6 @@ terraform {
 }
 
 provider "azurerm" {
-  use_azuread_auth = true
   features {
     key_vault {
       purge_soft_delete_on_destroy = false

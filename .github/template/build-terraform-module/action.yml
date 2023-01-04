@@ -35,7 +35,7 @@ runs:
         terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false
         terraform validate
 
-        Remove-Item -Path .\infra\terraform\deploy\demo\.terraform** -Force -Recurse
+        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
       shell: pwsh
 
     - name: "Artifact: Store ${{ steps.module.outputs.name }}"

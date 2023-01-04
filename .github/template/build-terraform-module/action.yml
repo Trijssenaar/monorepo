@@ -37,7 +37,7 @@ runs:
         terraform validate
 
         Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
-        New-Item -Path artifacts
+        New-Item -Path artifacts -ItemType Directory
         zip artifacts/${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}.zip -r ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/**
       shell: pwsh
 

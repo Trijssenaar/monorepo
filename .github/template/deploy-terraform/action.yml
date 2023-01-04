@@ -37,8 +37,8 @@ runs:
     - run: |
         # Terraform Plan
         chmod --recursive +x artifacts/terraform/
-        terraform -chdir="artifacts/terraform/deploy/demo/" init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
-        terraform -chdir="artifacts/terraform/deploy/demo/" plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="$PWD/${{ inputs.environment }}.tfplan" -input=false
+        terraform -chdir="artifacts/terraform/deploy/shared-grid/" init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ inputs.environment }}.tfstate"
+        terraform -chdir="artifacts/terraform/deploy/shared-grid/" plan -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="$PWD/${{ inputs.environment }}.tfplan" -input=false
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
@@ -68,7 +68,7 @@ runs:
 
     - run: |
         # Terraform Apply
-        terraform -chdir="artifacts/terraform/deploy/demo/" apply -input=false $PWD/artifacts/${{ inputs.environment }}.tfplan/${{ inputs.environment }}.tfplan
+        terraform -chdir="artifacts/terraform/deploy/shared-grid/" apply -input=false $PWD/artifacts/${{ inputs.environment }}.tfplan/${{ inputs.environment }}.tfplan
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}

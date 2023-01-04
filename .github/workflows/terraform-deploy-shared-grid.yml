@@ -27,7 +27,7 @@ jobs:
       - uses: "./.github/template/build-terraform"
         with:
           terraformPath: infra/terraform
-          terraformDeployPath: deploy/demo
+          terraformDeployPath: deploy/shared-grid
 
   Deploy-DEV:
     environment: DEV

@@ -30,7 +30,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/infra/terraform/deploy/demo"
+    directory: "/infra/terraform/deploy/shared-grid"
     registries:
       - terraform-artifactory
     schedule:

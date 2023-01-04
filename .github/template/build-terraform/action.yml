@@ -9,7 +9,7 @@ inputs:
   terraformDeployPath:
     required: true
     description: "Path to the terraform files"
-    default: "deploy/demo"
+    default: "deploy/shared-grid"
 
 runs:
   using: "composite"

@@ -34,10 +34,15 @@ runs:
         terraform version
         terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false
         terraform validate
+
+        Remove-Item -Path .\infra\terraform\deploy\demo\.terraform** -Force -Recurse
+        Compress-Archive `
+          -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/** `
+          -DestinationPath artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSIO }}.zip
       shell: pwsh
 
     - name: "Artifact: Store ${{ steps.module.outputs.name }}"
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.module.outputs.name }}_azurerm_${{ env.MONOREPO_VERSION }}
-        path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/*.tf
+        name: ${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSIO }}.zip
+        path: artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSIO }}.zip

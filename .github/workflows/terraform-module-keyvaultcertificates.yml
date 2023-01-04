@@ -37,6 +37,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: "./.github/template/deploy-terraform-module"
+      - uses: "./.github/template/publish-terraform-module"
         with:
           terraformApiKey: ${{ secrets.TERRAFORM_APIKEY }}

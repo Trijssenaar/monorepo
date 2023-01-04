@@ -32,8 +32,8 @@ runs:
           $moduleVersion=$moduleElements[2]
           Write-Host "Publishing $moduleName $moduleProvider $moduleVersion..."
           curl `
-            -u${{ inputs.terraformApiKey }} `
-            -XPUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
-            -T $_.FullName
+            --user ${{ inputs.terraformApiKey }} `
+            --request PUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
+            --upload-file $_.FullName
         }
       shell: pwsh

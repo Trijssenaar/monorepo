@@ -39,5 +39,5 @@ runs:
     - name: "Artifact: Store ${{ steps.module.outputs.name }}"
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.module.outputs.name }}_azurerm_${{ env.MODULE_VERSION }}
+        name: ${{ steps.module.outputs.name }}_azurerm_${{ env.MONOREPO_VERSION }}
         path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/*.tf

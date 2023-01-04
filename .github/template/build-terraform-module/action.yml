@@ -37,10 +37,12 @@ runs:
         terraform validate
 
         Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
+        New-Item -Path artifacts
+        zip artifacts/${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}.zip -r ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/**
       shell: pwsh
 
     - name: "Artifact: Store ${{ env.TERRAFORM_MODULE }}"
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}
-        path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/**
+        path: artifacts/${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}.zip

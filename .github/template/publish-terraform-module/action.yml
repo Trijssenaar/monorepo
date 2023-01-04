@@ -1,0 +1,33 @@
+name: publish-terraform-module
+description: Deploy Terraform module to Terraform Registry
+
+inputs:
+  terraformApiKey:
+    required: true
+    description: "API key for Terraform Registry"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Determine module
+      id: module
+      run: |
+        $name="${{ inputs.terraformModulePath }}".Replace('/','-')
+        echo "TERRAFORM_MODULE=$name" >> $env:GITHUB_ENV
+        echo "TERRAFORM_PROVIDER=azurerm" >> $env:GITHUB_ENV
+      shell: pwsh
+
+    - name: "Artifact: Retrieve"
+      uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+
+    - name: "Deploy: Publish ${{ steps.moduleName.outputs.moduleName }}"
+      run: |
+        Get-Item -Path artifacts -Recurse -Filter *.zip
+
+        # curl `
+        #   -u${{ inputs.terraformApiKey }} `
+        #   -XPUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/${{ steps.moduleName.outputs.moduleName }}/azure/<VERSION>.zip" `
+        #   -T artifacts/${{ steps.moduleName.outputs.moduleName }}.zip
+      shell: pwsh

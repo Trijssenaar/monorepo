@@ -26,8 +26,11 @@ runs:
       run: |
         $zipFiles=Get-ChildItem -Path artifacts -Recurse -Filter *.zip
         $zipFiles | ForEach-Object{
-          Write-Host "Publishing $_.FullName..."
-          $_.BaseName 
+          moduleElements=$_.BaseName.Split('_') 
+          moduleName=$moduleElements[0]
+          moduleProvider=$moduleElements[1]
+          moduleVersion=$moduleElements[0]
+          Write-Host "Publishing $moduleName $moduleProvider moduleVersion..."
         } 
 
         # curl `

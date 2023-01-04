@@ -43,5 +43,4 @@ jobs:
           fetch-depth: 0
       - uses: "./.github/template/publish-terraform-module"
         with:
-          terraformModulePath: modules/keyvault
           terraformApiKey: ${{ secrets.TERRAFORM_APIKEY }}

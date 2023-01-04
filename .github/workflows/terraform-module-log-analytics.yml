@@ -39,5 +39,4 @@ jobs:
           fetch-depth: 0
       - uses: "./.github/template/deploy-terraform-module"
         with:
-          terraformModulePath: modules/log-analytics
           terraformApiKey: ${{ secrets.TERRAFORM_APIKEY }}

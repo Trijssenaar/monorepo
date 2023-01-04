@@ -14,7 +14,13 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/src/app1"
+    registries:
+      - private-artifactory
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/src/app2"
     registries:
       - private-artifactory
     schedule:

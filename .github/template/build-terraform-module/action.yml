@@ -29,5 +29,5 @@ runs:
     - name: Store Terraform
       uses: actions/upload-artifact@v3
       with:
-        name: "Terraform"
-        path: ${{ inputs.terraformPath }}
+        name: ${{ inputs.terraformModulePath }}
+        path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}

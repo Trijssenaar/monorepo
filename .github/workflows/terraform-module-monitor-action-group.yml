@@ -32,6 +32,7 @@ jobs:
           terraformModulePath: modules/monitor-action-group
 
   Publish:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: Build
     steps:

@@ -30,7 +30,31 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/infra/terraform"
+    directory: "/infra/terraform/deploy/demo"
+    registries:
+      - terraform-artifactory
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/infra/terraform/modules/keyvault"
+    registries:
+      - terraform-artifactory
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/infra/terraform/modules/keyvaultcertificates"
+    registries:
+      - terraform-artifactory
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/infra/terraform/modules/log-analytics"
+    registries:
+      - terraform-artifactory
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/infra/terraform/modules/monitor-action-group"
     registries:
       - terraform-artifactory
     schedule:

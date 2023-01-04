@@ -24,7 +24,11 @@ runs:
 
     - name: "Deploy: Publish ${{ steps.moduleName.outputs.moduleName }}"
       run: |
-        Get-ChildItem -Path artifacts -Recurse -Filter *.zip
+        $zipFiles=Get-ChildItem -Path artifacts -Recurse -Filter *.zip
+        $zipFiles | ForEach-Object{
+          Write-Host "Publishing $_.FullName..."
+          $_.BaseName 
+        } 
 
         # curl `
         #   -u${{ inputs.terraformApiKey }} `

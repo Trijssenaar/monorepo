@@ -1,0 +1,32 @@
+name: terraform-module-keyvault
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - .github/workflows/terraform-module-keyvault.yml
+      - .github/template/**
+      - infra/terraform/modules/keyvault/**
+  pull_request:
+    branches: ["main"]
+    paths:
+      - .github/workflows/terraform-module-keyvault.yml
+      - .github/template/**
+      - infra/terraform/modules/keyvault/**
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: "./.github/template/build-terraform-module"
+        with:
+          terraformPath: infra/terraform
+          terraformDeployPath: modules/keyvault

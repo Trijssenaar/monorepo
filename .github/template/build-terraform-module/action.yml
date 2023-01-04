@@ -42,6 +42,8 @@ runs:
         Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
         pushd ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }};zip ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}.zip -r **;popd
       shell: pwsh
+      env:
+        TF_TOKEN_trijssenaar_terraform_io: ${{ secrets.TF_TOKEN_trijssenaar_terraform_io }}
 
     - name: "Artifact: Store ${{ env.TERRAFORM_MODULE }}"
       uses: actions/upload-artifact@v3

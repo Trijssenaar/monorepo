@@ -24,7 +24,7 @@ runs:
 
     - name: "Deploy: Publish ${{ steps.moduleName.outputs.moduleName }}"
       run: |
-        Get-Item -Path artifacts -Recurse -Filter *.zip
+        Get-ChildItem -Path artifacts -Recurse -Filter *.zip
 
         # curl `
         #   -u${{ inputs.terraformApiKey }} `

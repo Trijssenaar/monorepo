@@ -35,4 +35,4 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: module
-        path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}
+        path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/*.tf

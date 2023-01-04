@@ -32,3 +32,7 @@ resource "azurerm_resource_group" "main" {
     prevent_destroy = true
   }
 }
+
+module "module-name" {
+  source = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-keyvault/azurerm"
+}

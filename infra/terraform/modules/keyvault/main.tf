@@ -94,7 +94,7 @@ resource "azurerm_monitor_diagnostic_setting" "diag" {
 }
 
 module "keyvaultcertificates" {
-  source   = "../../modules/keyvaultcertificates"
+  source   = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-keyvaultcertificates/azurerm"
   for_each = var.certificates
 
   keyvault_id = azurerm_key_vault.main.id

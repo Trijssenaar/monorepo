@@ -4,7 +4,15 @@ description: Deploy Terraform module to Terraform Registry
 runs:
   using: "composite"
   steps:
-    - name: Prepare Terraform
-      uses: hashicorp/setup-terraform@v2
+    - name: Determine module name
+      id: moduleName
+      run: |
+        $moduleName="${{ inputs.terraformModulePath }}".Replace('/','-')
+        echo "moduleName=$moduleName" >> $env:GITHUB_OUTPUT
+      shell: pwsh
+
+    - name: "Artifact: Retrieve ${{ steps.moduleName.outputs.moduleName }}"
+      uses: actions/download-artifact@v3
       with:
-        terraform_version: 1.3.6
+        name: ${{ steps.moduleName.outputs.moduleName }}
+        path: artifacts/${{ inputs.terraformModulePath }}

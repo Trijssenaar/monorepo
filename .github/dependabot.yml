@@ -20,12 +20,12 @@ updates:
   - package-ecosystem: "docker"
     directory: "/src/app1"
     registries:
-      - private-artifactory
+      - docker-artifactory
     schedule:
       interval: "daily"
   - package-ecosystem: "docker"
     directory: "/src/app2"
     registries:
-      - private-artifactory
+      - docker-artifactory
     schedule:
       interval: "daily"

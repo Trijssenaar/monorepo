@@ -32,7 +32,7 @@ runs:
           $moduleVersion=$moduleElements[2]
           Write-Host "Publishing $moduleName $moduleProvider $moduleVersion..."
 
-          $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes('${{ inputs.terraformApiKey }}''))
+          $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes('${{ inputs.terraformApiKey }}'))
           $Headers = @{
               Authorization = "Basic $encodedCreds"
           }

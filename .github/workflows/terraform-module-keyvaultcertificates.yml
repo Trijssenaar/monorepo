@@ -1,4 +1,4 @@
-name: terraform-module-keyvault
+name: terraform-module-keyvaultcertificates
 
 permissions:
   id-token: write
@@ -9,15 +9,15 @@ on:
   push:
     branches: ["main"]
     paths:
-      - .github/workflows/terraform-module-keyvault.yml
+      - .github/workflows/terraform-module-keyvaultcertificates.yml
       - .github/template/build-terraform-module
-      - infra/terraform/modules/keyvault/**
+      - infra/terraform/modules/keyvaultcertificates/**
   pull_request:
     branches: ["main"]
     paths:
-      - .github/workflows/terraform-module-keyvault.yml
+      - .github/workflows/terraform-module-keyvaultcertificates.yml
       - .github/template/build-terraform-module
-      - infra/terraform/modules/keyvault/**
+      - infra/terraform/modules/keyvaultcertificates/**
 
 jobs:
   Build:
@@ -29,4 +29,4 @@ jobs:
       - uses: "./.github/template/build-terraform-module"
         with:
           terraformPath: infra/terraform
-          terraformDeployPath: modules/keyvault
+          terraformDeployPath: modules/keyvaultcertificates

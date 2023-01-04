@@ -1,15 +1,15 @@
-name: build-terraform
-description: "Builds the terraform infrastructure"
+name: build-terraform-module
+description: Build Terraform module
 
 inputs:
   terraformPath:
     required: true
     description: "Path to the terraform files"
     default: "infra/terraform"
-  terraformDeployPath:
+  terraformModulePath:
     required: true
     description: "Path to the terraform files"
-    default: "deploy/demo"
+    default: "module/keyvault"
 
 runs:
   using: "composite"
@@ -22,7 +22,7 @@ runs:
     - name: Terraform Build
       run: |
         terraform version
-        terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformDeployPath }}/ init -input=false -backend=false
+        terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false
         terraform validate
       shell: pwsh
 

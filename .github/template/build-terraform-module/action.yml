@@ -26,8 +26,12 @@ runs:
         terraform validate
       shell: pwsh
 
+    - run: |
+        $Env:MODULE_NAME = "${{ inputs.terraformModulePath }}".Replace('/','-')
+      shell: pwsh
+
     - name: Store Terraform
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ inputs.terraformModulePath }}
+        name: ${{ env.MODULE_NAME }}
         path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}

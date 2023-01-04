@@ -36,9 +36,7 @@ runs:
         terraform validate
 
         Remove-Item -Path .\infra\terraform\deploy\demo\.terraform** -Force -Recurse
-        Compress-Archive `
-          -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/** `
-          -DestinationPath artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSION }}.zip
+        zip artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSION }}.zip ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/**
       shell: pwsh
 
     - name: "Artifact: Store ${{ steps.module.outputs.name }}"

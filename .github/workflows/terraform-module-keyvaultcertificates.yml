@@ -40,3 +40,4 @@ jobs:
       - uses: "./.github/template/deploy-terraform-module"
         with:
           terraformModulePath: modules/keyvaultcertificates
+          terraformApiKey: ${{ secrets.TERRAFORM_APIKEY }}

@@ -26,15 +26,14 @@ runs:
       run: |
         $zipFiles=Get-ChildItem -Path artifacts -Recurse -Filter *.zip
         $zipFiles | ForEach-Object{
-          moduleElements=$_.BaseName.Split('_') 
-          moduleName=$moduleElements[0]
-          moduleProvider=$moduleElements[1]
-          moduleVersion=$moduleElements[0]
+          $moduleElements=$_.BaseName.Split('_') 
+          $moduleName=$moduleElements[0]
+          $moduleProvider=$moduleElements[1]
+          $moduleVersion=$moduleElements[0]
           Write-Host "Publishing $moduleName $moduleProvider moduleVersion..."
-        } 
-
-        # curl `
-        #   -u${{ inputs.terraformApiKey }} `
-        #   -XPUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/${{ steps.moduleName.outputs.moduleName }}/azure/<VERSION>.zip" `
-        #   -T artifacts/${{ steps.moduleName.outputs.moduleName }}.zip
+          curl `
+            -u${{ inputs.terraformApiKey }} `
+            -XPUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
+            -T $_.FullName
+        }
       shell: pwsh

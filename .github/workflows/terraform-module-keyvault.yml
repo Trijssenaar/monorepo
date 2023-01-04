@@ -44,3 +44,4 @@ jobs:
       - uses: "./.github/template/publish-terraform-module"
         with:
           terraformModulePath: modules/keyvault
+          terraformApiKey: ${{ secrets.TERRAFORM_APIKEY }}

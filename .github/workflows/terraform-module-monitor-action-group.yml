@@ -40,3 +40,4 @@ jobs:
       - uses: "./.github/template/deploy-terraform-module"
         with:
           terraformModulePath: modules/monitor-action-group
+          terraformApiKey: ${{ secrets.TERRAFORM_APIKEY }}

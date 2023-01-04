@@ -10,13 +10,11 @@ on:
     branches: ["main"]
     paths:
       - .github/workflows/terraform-module-log-analytics.yml
-      - .github/template/build-terraform-module/**
       - infra/terraform/modules/log-analytics/**
   pull_request:
     branches: ["main"]
     paths:
       - .github/workflows/terraform-module-log-analytics.yml
-      - .github/template/build-terraform-module/**
       - infra/terraform/modules/log-analytics/**
 
 jobs:

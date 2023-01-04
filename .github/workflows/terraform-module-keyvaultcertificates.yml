@@ -10,13 +10,13 @@ on:
     branches: ["main"]
     paths:
       - .github/workflows/terraform-module-keyvaultcertificates.yml
-      - .github/template/build-terraform-module
+      - .github/template/build-terraform-module/**
       - infra/terraform/modules/keyvaultcertificates/**
   pull_request:
     branches: ["main"]
     paths:
       - .github/workflows/terraform-module-keyvaultcertificates.yml
-      - .github/template/build-terraform-module
+      - .github/template/build-terraform-module/**
       - infra/terraform/modules/keyvaultcertificates/**
 
 jobs:

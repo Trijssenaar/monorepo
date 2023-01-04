@@ -6,15 +6,15 @@ on:
     branches: ["main"]
     paths:
       - .github/workflows/app2.yml
-      - .github/template/build-prepare/*
-      - .github/template/build-docker/*
+      - .github/template/build-prepare/**
+      - .github/template/build-docker/**
       - src/app2/**
   pull_request:
     branches: ["main"]
     paths:
       - .github/workflows/app2.yml
-      - .github/template/build-prepare/*
-      - .github/template/build-docker/*
+      - .github/template/build-prepare/**
+      - .github/template/build-docker/**
       - src/app2/**
 
 jobs:

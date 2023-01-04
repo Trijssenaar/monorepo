@@ -31,9 +31,17 @@ runs:
           $moduleProvider=$moduleElements[1]
           $moduleVersion=$moduleElements[2]
           Write-Host "Publishing $moduleName $moduleProvider $moduleVersion..."
-          curl `
-            --user ${{ inputs.terraformApiKey }} `
-            --request PUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
-            --upload-file $_.FullName
+
+          $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(${{ inputs.terraformApiKey }}))
+          $Headers = @{
+              Authorization = "Basic $encodedCreds"
+          }
+
+          Invoke-WebRequest -Headers $Headers -Method Put -Uri "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" 
+
+          # curl `
+          #   --user ${{ inputs.terraformApiKey }} `
+          #   --request PUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
+          #   --upload-file $_.FullName
         }
       shell: pwsh

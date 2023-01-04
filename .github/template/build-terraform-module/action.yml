@@ -36,6 +36,7 @@ runs:
         terraform validate
 
         Remove-Item -Path .\infra\terraform\deploy\demo\.terraform** -Force -Recurse
+        New-Item -Path artifacts -ItemType Directory
         zip artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSION }}.zip ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/**
       shell: pwsh
 

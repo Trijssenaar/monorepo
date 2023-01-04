@@ -26,10 +26,11 @@ runs:
       id: module
       run: |
         $name="${{ inputs.terraformModulePath }}".Replace('/','-')
-        echo "name=$name" >> $env:GITHUB_OUTPUT
+        echo "TERRAFORM_MODULE=$name" >> $env:GITHUB_ENV
+        echo "TERRAFORM_PROVIDER=azurerm" >> $env:GITHUB_ENV
       shell: pwsh
 
-    - name: "Terraform: Validate ${{ steps.module.outputs.name }}"
+    - name: "Terraform: Validate ${{ env.TERRAFORM_MODULE }}"
       run: |
         terraform version
         terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false
@@ -38,8 +39,8 @@ runs:
         Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
       shell: pwsh
 
-    - name: "Artifact: Store ${{ steps.module.outputs.name }}"
+    - name: "Artifact: Store ${{ env.TERRAFORM_MODULE }}"
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.module.outputs.name }}_azure_${{ env.MONOREPO_VERSION }}
+        name: ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}
         path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/**

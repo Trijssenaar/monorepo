@@ -26,13 +26,15 @@ runs:
         terraform validate
       shell: pwsh
 
-    - run: |
-        $Env:MODULE_NAME = $("${{ inputs.terraformModulePath }}".Replace('/','-'))
-        $Env:MODULE_NAME
+    - name: Determine module name
+      id: moduleName
+      run: |
+        $moduleName="${{ inputs.terraformModulePath }}".Replace('/','-')
+        echo "moduleName=$moduleName" >> $env:GITHUB_OUTPUT
       shell: pwsh
 
     - name: Store Terraform
       uses: actions/upload-artifact@v3
       with:
-        name: module
+        name: ${{ steps.moduleName.outputs.moduleName }}
         path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/*.tf

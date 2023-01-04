@@ -11,8 +11,7 @@ registries:
   terraform-artifactory:
     type: terraform-registry
     url: https://trijssenaar.jfrog.io
-    username: ${{ secrets.ARTIFACTORY_DOCKER_USERNAME }}
-    password: ${{ secrets.ARTIFACTORY_DOCKER_PASSWORD }}
+    token: ${{ secrets.ARTIFACTORY_DOCKER_PASSWORD }}
 updates:
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests

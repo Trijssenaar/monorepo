@@ -38,7 +38,9 @@ runs:
 
         Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
         New-Item -Path artifacts -ItemType Directory
-        zip artifacts/${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}.zip -r ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/**
+        pushd ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}
+        zip artifacts/${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}.zip -r **
+        popd
       shell: pwsh
 
     - name: "Artifact: Store ${{ env.TERRAFORM_MODULE }}"

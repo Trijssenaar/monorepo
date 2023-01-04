@@ -14,6 +14,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: "./.github/template/prepare-gitversion"
+
+    - name: Determine Version
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.15
+
     - name: Determine module name
       id: moduleName
       run: |
@@ -36,5 +42,5 @@ runs:
     - name: "Artifact: Store ${{ steps.moduleName.outputs.moduleName }}"
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.moduleName.outputs.moduleName }}
+        name: ${{ steps.moduleName.outputs.moduleName }}/azurerm/${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
         path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/*.tf

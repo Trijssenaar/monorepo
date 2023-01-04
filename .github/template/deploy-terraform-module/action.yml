@@ -1,6 +1,11 @@
 name: deploy-terraform-module
 description: Deploy Terraform module to Terraform Registry
 
+inputs:
+  terraformApiKey:
+    required: true
+    description: "API key for Terraform Registry"
+
 runs:
   using: "composite"
   steps:
@@ -15,4 +20,16 @@ runs:
       uses: actions/download-artifact@v3
       with:
         name: ${{ steps.moduleName.outputs.moduleName }}
-        path: artifacts/${{ inputs.terraformModulePath }}
+        path: artifacts/${{ steps.moduleName.outputs.moduleName }}
+
+    - name: "Deploy: Publish ${{ steps.moduleName.outputs.moduleName }}"
+      run: |
+        Compress-Archive `
+          -Path artifacts/${{ steps.moduleName.outputs.moduleName }} `
+          -DestinationPath artifacts/${{ steps.moduleName.outputs.moduleName }}.zip
+          
+        curl `
+          -u${{ inputs.terraformApiKey }} `
+          -XPUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/${{ steps.moduleName.outputs.moduleName }}/azure/<VERSION>.zip" `
+          -T artifacts/${{ steps.moduleName.outputs.moduleName }}.zip
+      shell: pwsh

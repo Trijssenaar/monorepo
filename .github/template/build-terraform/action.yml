@@ -14,6 +14,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: "./.github/template/prepare-gitversion"
+
+    - name: Determine Version
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.15
+
     - name: Prepare Terraform
       uses: hashicorp/setup-terraform@v2
       with:

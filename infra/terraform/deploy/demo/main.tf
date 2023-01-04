@@ -34,5 +34,6 @@ resource "azurerm_resource_group" "main" {
 }
 
 module "module-name" {
-  source = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-keyvault/azurerm"
+  source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-keyvault/azurerm"
+  version = "0.1.0.313"
 }

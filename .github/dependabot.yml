@@ -3,8 +3,13 @@
 
 version: 2
 registries:
-  private-artifactory:
+  docker-artifactory:
     type: docker-registry
+    url: https://trijssenaar.jfrog.io
+    username: ${{ secrets.ARTIFACTORY_DOCKER_USERNAME }}
+    password: ${{ secrets.ARTIFACTORY_DOCKER_PASSWORD }}
+  terraform-artifactory:
+    type: terraform-registry
     url: https://trijssenaar.jfrog.io
     username: ${{ secrets.ARTIFACTORY_DOCKER_USERNAME }}
     password: ${{ secrets.ARTIFACTORY_DOCKER_PASSWORD }}

@@ -38,11 +38,11 @@ runs:
         Remove-Item -Path .\infra\terraform\deploy\demo\.terraform** -Force -Recurse
         Compress-Archive `
           -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/** `
-          -DestinationPath artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSIO }}.zip
+          -DestinationPath artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSION }}.zip
       shell: pwsh
 
     - name: "Artifact: Store ${{ steps.module.outputs.name }}"
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSIO }}.zip
-        path: artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSIO }}.zip
+        name: ${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSION }}.zip
+        path: artifacts/${{ steps.moduleName.outputs.moduleName }}_azure_${{ env.MONOREPO_VERSION }}.zip

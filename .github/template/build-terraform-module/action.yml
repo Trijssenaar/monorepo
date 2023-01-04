@@ -22,22 +22,22 @@ runs:
       with:
         terraform_version: 1.3.6
 
-    - name: Determine module name
-      id: moduleName
+    - name: Determine module
+      id: module
       run: |
         $name="${{ inputs.terraformModulePath }}".Replace('/','-')
         echo "name=$name" >> $env:GITHUB_OUTPUT
       shell: pwsh
 
-    - name: "Terraform: Validate ${{ steps.moduleName.outputs.moduleName }}"
+    - name: "Terraform: Validate ${{ steps.module.outputs.name }}"
       run: |
         terraform version
         terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false
         terraform validate
       shell: pwsh
 
-    - name: "Artifact: Store ${{ steps.moduleName.outputs.moduleName }}"
+    - name: "Artifact: Store ${{ steps.module.outputs.name }}"
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.moduleName.outputs.name }}_azurerm_${{ steps.moduleVersion.outputs.version }}
+        name: ${{ steps.module.outputs.name }}_azurerm_${{ env.MODULE_VERSION }}
         path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/*.tf

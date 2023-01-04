@@ -28,6 +28,7 @@ runs:
 
     - run: |
         $Env:MODULE_NAME = $("${{ inputs.terraformModulePath }}".Replace('/','-'))
+        $Env:MODULE_NAME
       shell: pwsh
 
     - name: Store Terraform

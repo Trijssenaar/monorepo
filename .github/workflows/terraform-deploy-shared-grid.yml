@@ -1,4 +1,4 @@
-name: Build infra
+name: terraform-deploy-shared-grid
 
 permissions:
   id-token: write

@@ -95,7 +95,7 @@ resource "azurerm_monitor_diagnostic_setting" "diag" {
 
 module "keyvaultcertificates" {
   source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-keyvaultcertificates/azurerm"
-  version = "0.1.0.314"
+  version = "0.1.0.336"
 
   for_each = var.certificates
 

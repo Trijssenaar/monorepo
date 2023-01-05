@@ -32,6 +32,8 @@ runs:
 
     - name: "Terraform: Validate ${{ env.TERRAFORM_MODULE }}"
       run: |
+        $env:TF_TOKEN_trijssenaar_terraform_io=${{ secrets.ARTIFACTORY_TERRAFORM_TOKEN }}
+
         terraform version
         if($LastExitCode){throw}
         terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false
@@ -42,8 +44,6 @@ runs:
         Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
         pushd ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }};zip ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}.zip -r **;popd
       shell: pwsh
-      with:
-        TF_TOKEN_trijssenaar_terraform_io: ${{ secrets.ARTIFACTORY_TERRAFORM_TOKEN }}
 
     - name: "Artifact: Store ${{ env.TERRAFORM_MODULE }}"
       uses: actions/upload-artifact@v3

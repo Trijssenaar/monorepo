@@ -38,6 +38,7 @@ runs:
         $env:TF_LOG='TRACE'
 
         $credentials=([PSObject]@{credentials=@{"trijssenaar.jfrog.io"=@{token="${{ inputs.terraformToken }}"}}}) | ConvertTo-Json
+        New-Item -Path ~/.terraform.d -ItemType Directory -Force
         Set-Content -Path ~/.terraform.d/credentials.tfrc.json -Value $credentials
 
         terraform version

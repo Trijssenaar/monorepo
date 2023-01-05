@@ -24,7 +24,7 @@ runs:
     - name: Prepare Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-        terraform_version: 1.3.6
+        terraform_version: 1.3.7
 
     # Plan
 

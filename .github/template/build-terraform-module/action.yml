@@ -37,7 +37,8 @@ runs:
       run: |
         $env:TF_LOG='TRACE'
 
-        Set-Content -Path ~/.terraform.d/credentials.tfrc.json -Value ([PSObject]@{credentials=@{"trijssenaar.jfrog.io"=@{token="${{ inputs
+        $credentials=([PSObject]@{credentials=@{"trijssenaar.jfrog.io"=@{token="${{ inputs.terraformToken }}"}}}) | ConvertTo-Json
+        Set-Content -Path ~/.terraform.d/credentials.tfrc.json -Value $credentials
 
         terraform version
         if($LastExitCode){throw}

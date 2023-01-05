@@ -2,9 +2,12 @@ name: publish-terraform-module
 description: Deploy Terraform module to Terraform Registry
 
 inputs:
+  terraformUsername:
+    required: true
+    description: "Username for Terraform Registry"
   terraformToken:
     required: true
-    description: "API key for Terraform Registry"
+    description: "Token for Terraform Registry"
 
 runs:
   using: "composite"
@@ -32,7 +35,7 @@ runs:
           $moduleVersion=$moduleElements[2]
           Write-Host "Publishing $moduleName $moduleProvider $moduleVersion..."
 
-          $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes('${{ inputs.terraformToken }}'))
+          $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes('${{ inputs.terraformUsername }}:${{ inputs.terraformToken }}'))
           $Headers = @{
               Authorization = "Basic $encodedCreds"
           }

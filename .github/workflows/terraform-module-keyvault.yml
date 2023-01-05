@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
       - uses: "./.github/template/build-terraform-module"
         with:
-          terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
+          terraformToken: ${{ secrets.ARTIFACTORY_TOKEN }}
           terraformPath: infra/terraform
           terraformModulePath: modules/keyvault
 
@@ -44,4 +44,5 @@ jobs:
           fetch-depth: 0
       - uses: "./.github/template/publish-terraform-module"
         with:
-          terraformToken: ${{ secrets.TERRAFORM_APIKEY }}
+          terraformUsername: ${{ secrets.ARTIFACTORY_USERNAME }}
+          terraformToken: ${{ secrets.ARTIFACTORY_TOKEN }}

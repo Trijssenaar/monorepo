@@ -35,6 +35,8 @@ runs:
 
     - name: "Terraform: Validate ${{ env.TERRAFORM_MODULE }}"
       run: |
+        $env:TF_LOG=TRACE
+
         terraform version
         if($LastExitCode){throw}
         terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false

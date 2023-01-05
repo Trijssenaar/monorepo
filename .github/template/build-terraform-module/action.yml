@@ -37,6 +37,8 @@ runs:
       run: |
         terraform version
         if($LastExitCode){throw}
+        terraform login
+        if($LastExitCode){throw}
         terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false
         if($LastExitCode){throw}
         terraform validate

@@ -26,6 +26,7 @@ jobs:
           fetch-depth: 0
       - uses: "./.github/template/build-terraform-module"
         with:
+          terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
           terraformPath: infra/terraform
           terraformModulePath: modules/log-analytics
 
@@ -39,4 +40,4 @@ jobs:
           fetch-depth: 0
       - uses: "./.github/template/publish-terraform-module"
         with:
-          terraformApiKey: ${{ secrets.TERRAFORM_APIKEY }}
+          terraformToken: ${{ secrets.TERRAFORM_TOKEN }}

@@ -40,4 +40,4 @@ jobs:
           fetch-depth: 0
       - uses: "./.github/template/publish-terraform-module"
         with:
-          terraformToken: ${{ secrets.TERRAFORM_APIKEY }}
+          terraformToken: ${{ secrets.TERRAFORM_TOKEN }}

@@ -32,7 +32,7 @@ runs:
 
     - name: "Terraform: Validate ${{ env.TERRAFORM_MODULE }}"
       run: |
-        $env:TF_TOKEN_trijssenaar_terraform_io=${{ secrets.ARTIFACTORY_TERRAFORM_TOKEN }}
+        $env:TF_TOKEN_trijssenaar_terraform_io=${{ secrets.TF_TOKEN_TRIJSSENAAR_TERRAFORM_IO }}
 
         terraform version
         if($LastExitCode){throw}

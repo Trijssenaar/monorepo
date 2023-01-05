@@ -35,7 +35,7 @@ runs:
 
     - name: "Terraform: Validate ${{ env.TERRAFORM_MODULE }}"
       run: |
-        $env:TF_LOG=TRACE
+        $env:TF_LOG='TRACE'
 
         terraform version
         if($LastExitCode){throw}

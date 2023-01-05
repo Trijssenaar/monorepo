@@ -2,7 +2,7 @@ name: publish-terraform-module
 description: Deploy Terraform module to Terraform Registry
 
 inputs:
-  terraformApiKey:
+  terraformToken:
     required: true
     description: "API key for Terraform Registry"
 
@@ -32,7 +32,7 @@ runs:
           $moduleVersion=$moduleElements[2]
           Write-Host "Publishing $moduleName $moduleProvider $moduleVersion..."
 
-          $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes('${{ inputs.terraformApiKey }}'))
+          $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes('${{ inputs.terraformToken }}'))
           $Headers = @{
               Authorization = "Basic $encodedCreds"
           }
@@ -45,7 +45,7 @@ runs:
             -ContentType "application/zip"
 
           # curl `
-          #   --user ${{ inputs.terraformApiKey }} `
+          #   --user ${{ inputs.terraformToken }} `
           #   --request PUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
           #   --upload-file $_.FullName
         }

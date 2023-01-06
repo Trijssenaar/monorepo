@@ -1,0 +1,48 @@
+name: terraform-module-shared-grid
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - .github/workflows/terraform-module-shared-grid.yml
+      - .github/template/build-terraform-module/**
+      - .github/template/publish-terraform-module/**
+      - infra/terraform/modules/shared-grid/**
+  pull_request:
+    branches: ["main"]
+    paths:
+      - .github/workflows/terraform-module-shared-grid.yml
+      - .github/template/build-terraform-module/**
+      - .github/template/publish-terraform-module/**
+      - infra/terraform/modules/shared-grid/**
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: "./.github/template/build-terraform-module"
+        with:
+          terraformToken: ${{ secrets.ARTIFACTORY_TOKEN }}
+          terraformPath: infra/terraform
+          terraformModulePath: modules/shared-grid
+
+  Publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: Build
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: "./.github/template/publish-terraform-module"
+        with:
+          terraformUsername: ${{ secrets.ARTIFACTORY_USERNAME }}
+          terraformToken: ${{ secrets.ARTIFACTORY_TOKEN }}

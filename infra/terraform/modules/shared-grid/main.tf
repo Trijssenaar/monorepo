@@ -39,53 +39,53 @@ resource "tls_private_key" "ssh_virtual_machines" {
   rsa_bits  = 4096
 }
 
-module "keyvault" {
-  source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/keyvault/azurerm"
-  version = "0.1.0.77"
+# module "keyvault" {
+#   source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/keyvault/azurerm"
+#   version = "0.1.0.77"
 
-  keyvault_name       = local.keyvault_name
-  resource_group_name = resource.azurerm_resource_group.shared-grid.name
-  keyvault_location   = resource.azurerm_resource_group.shared-grid.location
+#   keyvault_name       = local.keyvault_name
+#   resource_group_name = resource.azurerm_resource_group.shared-grid.name
+#   keyvault_location   = resource.azurerm_resource_group.shared-grid.location
 
-  sku_name                        = "premium"
-  enabled_for_deployment          = "true"
-  enabled_for_disk_encryption     = "true"
-  enabled_for_template_deployment = "true"
-  support_name                    = local.support_name
-  support_email                   = local.support_email
-  log_analytics_workspace_id      = module.log_analytics_workspace.id
+#   sku_name                        = "premium"
+#   enabled_for_deployment          = "true"
+#   enabled_for_disk_encryption     = "true"
+#   enabled_for_template_deployment = "true"
+#   support_name                    = local.support_name
+#   support_email                   = local.support_email
+#   log_analytics_workspace_id      = module.log_analytics_workspace.id
 
-  rbac = {
-    keyvault_administrator = {
-      object_ids = [data.azurerm_client_config.current.object_id]
-    }
+#   rbac = {
+#     keyvault_administrator = {
+#       object_ids = [data.azurerm_client_config.current.object_id]
+#     }
 
-    keyvault_secrets_officer = {
-      # object_ids = flatten([data.azurerm_client_config.current.object_id, local.secrets_officers])
-      object_ids = flatten([data.azurerm_client_config.current.object_id])
-    }
+#     keyvault_secrets_officer = {
+#       # object_ids = flatten([data.azurerm_client_config.current.object_id, local.secrets_officers])
+#       object_ids = flatten([data.azurerm_client_config.current.object_id])
+#     }
 
-    keyvault_certificate_officer = {
-      # object_ids = flatten([data.azurerm_client_config.current.object_id, local.certificate_officers])
-      object_ids = flatten([data.azurerm_client_config.current.object_id])
-    }
-  }
+#     keyvault_certificate_officer = {
+#       # object_ids = flatten([data.azurerm_client_config.current.object_id, local.certificate_officers])
+#       object_ids = flatten([data.azurerm_client_config.current.object_id])
+#     }
+#   }
 
-  certificates = {
-    "trijssenaar-cert" = {
-      name      = "trijssenaar-cert"
-      subject   = "CN=temporary"
-      dns_names = ["domain.com", "www.domain.com"]
-    }
-  }
+#   certificates = {
+#     "trijssenaar-cert" = {
+#       name      = "trijssenaar-cert"
+#       subject   = "CN=temporary"
+#       dns_names = ["domain.com", "www.domain.com"]
+#     }
+#   }
 
-  secrets = {
-    "PRIVATE-KEY-PEM"    = { value = tls_private_key.ssh_virtual_machines.private_key_pem }
-    "PUBLIC-KEY-OPENSSH" = { value = tls_private_key.ssh_virtual_machines.public_key_openssh }
-    "VM-ADMIN-PASSWORD"  = { value = random_password.admin_password.result },
-    "UNDEFINED"          = { value = "Known after applayer" }
-  }
-}
+#   secrets = {
+#     "PRIVATE-KEY-PEM"    = { value = tls_private_key.ssh_virtual_machines.private_key_pem }
+#     "PUBLIC-KEY-OPENSSH" = { value = tls_private_key.ssh_virtual_machines.public_key_openssh }
+#     "VM-ADMIN-PASSWORD"  = { value = random_password.admin_password.result },
+#     "UNDEFINED"          = { value = "Known after applayer" }
+#   }
+# }
 
 module "action_group_support" {
   source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/monitor-action-group/azurerm"

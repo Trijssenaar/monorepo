@@ -9,13 +9,17 @@ on:
   push:
     branches: ["main"]
     paths:
-      - .github/workflows/infra.yml
-      - infra/**
+      - .github/workflows/terraform-deploy-shared-grid.yml
+      - .github/template/build-terraform/**
+      - .github/template/deploy-terraform/**
+      - infra/terraform/deploy/shared-grid/**
   pull_request:
     branches: ["main"]
     paths:
-      - .github/workflows/infra.yml
-      - infra/**
+      - .github/workflows/terraform-deploy-shared-grid.yml
+      - .github/template/build-terraform/**
+      - .github/template/deploy-terraform/**
+      - infra/terraform/deploy/shared-grid/**
 
 jobs:
   Build:
@@ -26,11 +30,12 @@ jobs:
           fetch-depth: 0
       - uses: "./.github/template/build-terraform"
         with:
+          terraformToken: ${{ secrets.ARTIFACTORY_TOKEN }}
           terraformPath: infra/terraform
-          terraformDeployPath: deploy/shared-grid
+          terraformModulePath: deploy/shared-grid
 
-  Deploy-DEV:
-    environment: DEV
+  Deploy-DEV-plan:
+    environment: DEV-plan
     runs-on: ubuntu-latest
     needs:
       - Build
@@ -41,16 +46,19 @@ jobs:
       - uses: "./.github/template/deploy-terraform"
         with:
           environment: DEV
+          terraformModulePath: deploy/shared-grid
 
-  Deploy-TST:
-    environment: TST
+  Deploy-DEV:
+    environment: DEV-plan
     runs-on: ubuntu-latest
     needs:
-      - Deploy-DEV
+      - Deploy-DEV-plan
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: "./.github/template/deploy-terraform"
         with:
-          environment: TST
+          environment: DEV
+          terraformModulePath: deploy/shared-grid
+          terraformApply: true

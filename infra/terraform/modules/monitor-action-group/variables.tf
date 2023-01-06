@@ -2,6 +2,7 @@ variable "resource_group_name" {
   type        = string
   description = "Name of the resourcegroup"
 }
+
 variable "support_name" {
   type        = string
   description = "Name of the support team"

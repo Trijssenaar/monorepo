@@ -46,10 +46,5 @@ runs:
             -Uri "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
             -InFile $_.FullName `
             -ContentType "application/zip"
-
-          # curl `
-          #   --user ${{ inputs.terraformToken }} `
-          #   --request PUT "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
-          #   --upload-file $_.FullName
         }
       shell: pwsh

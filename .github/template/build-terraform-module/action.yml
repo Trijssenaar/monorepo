@@ -35,7 +35,10 @@ runs:
 
     - name: "Terraform: Validate ${{ env.TERRAFORM_MODULE }}"
       run: |
-        $env:TF_LOG='TRACE'
+        # TODO: Remove this when decent secret replacement is available
+        $credentials=([PSObject]@{credentials=@{"trijssenaar.jfrog.io"=@{token="${{ inputs.terraformToken }}"}}}) | ConvertTo-Json
+        New-Item -Path ~/.terraform.d -ItemType Directory -Force
+        Set-Content -Path ~/.terraform.d/credentials.tfrc.json -Value $credentials
 
         terraform version
         if($LastExitCode){throw}
@@ -47,8 +50,6 @@ runs:
         Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
         pushd ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }};zip ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_VERSION }}.zip -r **;popd
       shell: pwsh
-      env:
-        TF_TOKEN_trijssenaar_terraform_io: ${{ inputs.terraformToken }}
 
     - name: "Artifact: Store ${{ env.TERRAFORM_MODULE }}"
       uses: actions/upload-artifact@v3

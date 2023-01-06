@@ -31,6 +31,7 @@ jobs:
           terraformModulePath: deploy/shared-grid
 
   Deploy-DEV-plan:
+    if: github.ref == 'refs/heads/main'
     environment: DEV-plan
     runs-on: ubuntu-latest
     needs:
@@ -45,6 +46,7 @@ jobs:
           terraformModulePath: deploy/shared-grid
 
   Deploy-DEV:
+    if: github.ref == 'refs/heads/main'
     environment: DEV-plan
     runs-on: ubuntu-latest
     needs:

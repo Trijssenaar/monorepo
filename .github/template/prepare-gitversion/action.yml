@@ -15,5 +15,5 @@ runs:
 
     - run: |
         echo "MONOREPO_FULLSEMVER=${{ steps.gitversion.outputs.FullSemVer }}" >> $env:GITHUB_ENV
-        echo "MONOREPO_VERSION=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}" >> $env:GITHUB_ENV
+        echo "MONOREPO_VERSION=${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ github.run_number }}" >> $env:GITHUB_ENV
       shell: pwsh

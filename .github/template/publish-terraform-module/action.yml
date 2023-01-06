@@ -43,7 +43,7 @@ runs:
           Invoke-WebRequest `
             -Headers $Headers `
             -Method Put `
-            -Uri "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$moduleName/$moduleProvider/$moduleVersion.zip" `
+            -Uri "https://trijssenaar.jfrog.io/artifactory/infrastructure-terraform-local/monorepo/$($moduleName.Replace('module-',''))/$moduleProvider/$moduleVersion.zip" `
             -InFile $_.FullName `
             -ContentType "application/zip"
         }

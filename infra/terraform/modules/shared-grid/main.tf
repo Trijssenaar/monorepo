@@ -40,7 +40,7 @@ resource "tls_private_key" "ssh_virtual_machines" {
 }
 
 module "keyvault" {
-  source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-keyvault/azurerm"
+  source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/keyvault/azurerm"
   version = "0.1.0.347"
 
   keyvault_name       = local.keyvault_name
@@ -86,7 +86,7 @@ module "keyvault" {
 }
 
 module "action_group_support" {
-  source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-monitor-action-group/azurerm"
+  source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/monitor-action-group/azurerm"
   version = "0.1.0.314"
 
   resource_group_name = azurerm_resource_group.shared-grid.name
@@ -100,7 +100,7 @@ module "action_group_support" {
 }
 
 module "log_analytics_workspace" {
-  source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-log-analytics/azurerm"
+  source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/log-analytics/azurerm"
   version = "0.1.0.314"
 
   name                = local.log_analytics_workspace_name

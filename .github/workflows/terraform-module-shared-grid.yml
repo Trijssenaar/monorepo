@@ -10,15 +10,11 @@ on:
     branches: ["main"]
     paths:
       - .github/workflows/terraform-module-shared-grid.yml
-      - .github/template/build-terraform-module/**
-      - .github/template/publish-terraform-module/**
       - infra/terraform/modules/shared-grid/**
   pull_request:
     branches: ["main"]
     paths:
       - .github/workflows/terraform-module-shared-grid.yml
-      - .github/template/build-terraform-module/**
-      - .github/template/publish-terraform-module/**
       - infra/terraform/modules/shared-grid/**
 
 jobs:

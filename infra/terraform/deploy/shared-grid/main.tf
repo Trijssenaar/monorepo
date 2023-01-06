@@ -29,6 +29,6 @@ module "shared-grid" {
   version = "0.1.0.346"
 
   environment = local.environment
-  resource-group-name = local.resource-group-name
+  resource_group_name = local.resource_group_name
   location = local.location
 }

@@ -101,7 +101,7 @@ module "action_group_support" {
 
 module "log_analytics_workspace" {
   source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/log-analytics/azurerm"
-  version = "0.1.0.38"
+  version = "0.1.0.39"
 
   name                = local.log_analytics_workspace_name
   resource_group_name = azurerm_resource_group.shared-grid.name

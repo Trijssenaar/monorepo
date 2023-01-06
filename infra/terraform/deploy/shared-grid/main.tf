@@ -107,7 +107,7 @@ module "keyvault" {
 
 module "action_group_support" {
   source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/modules-monitor-action-group/azurerm"
-  version = "0.1.0.314"
+  version = "0.1.0.366"
 
   resource_group_name = azurerm_resource_group.shared-grid.name
 

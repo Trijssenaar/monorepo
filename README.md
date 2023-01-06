@@ -1,7 +1,7 @@
 |Category|Name|Workflow|
 |-|-|-|
 |Terraform Deployments|||
-||Shared Grid|![example branch parameter](https://github.com/trijssenaar/monorepo/actions/workflows/terraform-deploy-shared-grid.yml/badge.svg?branch=main)|
+||[Shared Grid](https://github.com/Trijssenaar/monorepo/actions/workflows/terraform-deploy-shared-grid.yml?query=branch%3Amain)|![example branch parameter](https://github.com/trijssenaar/monorepo/actions/workflows/terraform-deploy-shared-grid.yml/badge.svg?branch=main)|
 ||||
 |Terraform Modules|||
 ||Keyvault|![example branch parameter](https://github.com/trijssenaar/monorepo/actions/workflows/terraform-module-keyvault.yml/badge.svg?branch=main)|

@@ -59,3 +59,9 @@ updates:
       - terraform-artifactory
     schedule:
       interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/infra/terraform/modules/shared-grid"
+    registries:
+      - terraform-artifactory
+    schedule:
+      interval: "daily"

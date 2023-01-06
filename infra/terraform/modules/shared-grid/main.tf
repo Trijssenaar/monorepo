@@ -1,6 +1,6 @@
 locals {
   environment         = var.environment
-  resource_group_name = var.resource-group-name
+  resource_group_name = var.resource_group_name
   location            = var.location
 
   keyvault_name                = "main-${random_string.keyvault_suffix.result}-kv" #use variable instead of module due to circular dependency

@@ -20,7 +20,7 @@ provider "azurerm" {
 
 locals {
   environment         = var.environment
-  resource_group_name = var.resource-group-name
+  resource_group_name = var.resource_group_name
   location            = var.location
 }
 

@@ -3,7 +3,7 @@ variable "environment" {
   description = "The environment to deploy into, e.g. DEV, TST, ACC, PRD, etc."
 }
 
-variable "resource-group-name" {
+variable "resource_group_name" {
   type        = string
   description = "Name of the resourcegroup"
 }

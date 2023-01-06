@@ -40,12 +40,12 @@ resource "azurerm_key_vault" "main" {
   }
 }
 
-resource "azurerm_role_assignment" "rbac_role" {
-  count              = length(local.rbac_roles) #use count instead of for_each due to values not being known until apply
-  scope              = azurerm_key_vault.main.id
-  role_definition_id = local.rbac_roles[count.index].role_id
-  principal_id       = local.rbac_roles[count.index].object_id
-}
+# resource "azurerm_role_assignment" "rbac_role" {
+#   count              = length(local.rbac_roles) #use count instead of for_each due to values not being known until apply
+#   scope              = azurerm_key_vault.main.id
+#   role_definition_id = local.rbac_roles[count.index].role_id
+#   principal_id       = local.rbac_roles[count.index].object_id
+# }
 
 resource "null_resource" "add_contacts" {
   provisioner "local-exec" {
@@ -53,9 +53,9 @@ resource "null_resource" "add_contacts" {
     command = "az keyvault certificate contact list --vault-name ${var.keyvault_name} | jq -r '.[].emailAddress' | grep -q ${var.support_email} || az keyvault certificate contact add --vault-name ${var.keyvault_name} --email ${var.support_email} --name ${var.support_name}"
     when    = create
   }
-  depends_on = [
-    azurerm_role_assignment.rbac_role
-  ]
+  # depends_on = [
+  #   azurerm_role_assignment.rbac_role
+  # ]
 }
 
 resource "azurerm_monitor_diagnostic_setting" "diag" {

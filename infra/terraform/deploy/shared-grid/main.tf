@@ -26,7 +26,7 @@ locals {
 
 module "shared-grid" {
   source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/shared-grid/azurerm"
-  version = "0.1.0.5"
+  version = "0.1.0.8"
 
   environment = local.environment
   resource_group_name = local.resource_group_name

@@ -60,3 +60,34 @@ jobs:
           environment: DEV
           terraformModulePath: deploy/shared-grid
           terraformApply: true
+
+  Deploy-TST-plan:
+    if: github.ref == 'refs/heads/main'
+    environment: TST-plan
+    runs-on: ubuntu-latest
+    needs:
+      - Deploy-DEV
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: "./.github/template/deploy-terraform"
+        with:
+          environment: TST
+          terraformModulePath: deploy/shared-grid
+
+  Deploy-TST:
+    if: github.ref == 'refs/heads/main'
+    environment: TST
+    runs-on: ubuntu-latest
+    needs:
+      - Deploy-TST-plan
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: "./.github/template/deploy-terraform"
+        with:
+          environment: TST
+          terraformModulePath: deploy/shared-grid
+          terraformApply: true

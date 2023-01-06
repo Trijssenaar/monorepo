@@ -61,11 +61,13 @@ module "keyvault" {
     }
 
     keyvault_secrets_officer = {
-      object_ids = flatten([data.azurerm_client_config.current.object_id, local.secrets_officers])
+      # object_ids = flatten([data.azurerm_client_config.current.object_id, local.secrets_officers])
+      object_ids = flatten([data.azurerm_client_config.current.object_id])
     }
 
     keyvault_certificate_officer = {
-      object_ids = flatten([data.azurerm_client_config.current.object_id, local.certificate_officers])
+      # object_ids = flatten([data.azurerm_client_config.current.object_id, local.certificate_officers])
+      object_ids = flatten([data.azurerm_client_config.current.object_id])
     }
   }
 

@@ -47,7 +47,7 @@ jobs:
 
   Deploy-DEV:
     if: github.ref == 'refs/heads/main'
-    environment: DEV-plan
+    environment: DEV
     runs-on: ubuntu-latest
     needs:
       - Deploy-DEV-plan

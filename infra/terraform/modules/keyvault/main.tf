@@ -102,9 +102,9 @@ module "keyvaultcertificates" {
   keyvault_id = azurerm_key_vault.main.id
   certificate = each.value
 
-  depends_on = [
-    azurerm_role_assignment.rbac_role
-  ]
+  # depends_on = [
+  #   azurerm_role_assignment.rbac_role
+  # ]
 }
 
 resource "azurerm_key_vault_secret" "secret" {
@@ -118,7 +118,7 @@ resource "azurerm_key_vault_secret" "secret" {
     ignore_changes = all
   }
 
-  depends_on = [
-    azurerm_role_assignment.rbac_role
-  ]
+  # depends_on = [
+  #   azurerm_role_assignment.rbac_role
+  # ]
 }

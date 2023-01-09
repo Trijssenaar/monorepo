@@ -44,11 +44,11 @@ runs:
         terraform -chdir=${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/ init -input=false -backend=false; if($LastExitCode){throw}
         terraform validate; if($LastExitCode){throw}
 
-        pushd ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }};ls -la;zip ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_FULLSEMVER }}.zip -r .;ls -la;popd
+        pushd ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }};ls -la;zip ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_SEMVER }}.zip -r .;ls -la;popd
       shell: pwsh
 
     - name: "Artifact: Store ${{ env.TERRAFORM_MODULE }}"
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_FULLSEMVER }}
-        path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_FULLSEMVER }}.zip
+        name: ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_SEMVER }}
+        path: ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_SEMVER }}.zip

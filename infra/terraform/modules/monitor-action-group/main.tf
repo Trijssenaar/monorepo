@@ -7,4 +7,5 @@ resource "azurerm_monitor_action_group" "support_team" {
     name          = var.support_name
     email_address = var.support_email
   }
+  
 }

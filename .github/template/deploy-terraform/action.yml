@@ -69,3 +69,9 @@ runs:
       with:
         name: ${{ env.RESOURCE_GROUP_NAME }}.tfplan
         path: ${{ env.RESOURCE_GROUP_NAME }}.tfplan
+
+    - name: Store Terraform Plan
+      if: ${{ inputs.terraformApply == 'true'  }}
+      run: |
+        az keyvault secret list
+      shell: pwsh

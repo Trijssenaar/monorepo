@@ -46,6 +46,7 @@ resource "azurerm_key_vault_certificate" "certificate" {
       subject            = var.certificate.subject
       validity_in_months = 12
     }
+
   }
 
   lifecycle {

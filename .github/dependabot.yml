@@ -44,12 +44,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/infra/terraform/modules/keyvaultcertificates"
-    registries:
-      - terraform-artifactory
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/infra/terraform/modules/log-analytics"
     registries:
       - terraform-artifactory
@@ -57,12 +51,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/infra/terraform/modules/monitor-action-group"
-    registries:
-      - terraform-artifactory
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/infra/terraform/modules/shared-grid"
     registries:
       - terraform-artifactory
     schedule:

@@ -46,19 +46,16 @@ variable "support_email" {
   description = "Email address of the support team"
 }
 
-variable "rbac" {
+variable "policies" {
   type = map(object({
-    object_ids = list(string)
+    object_ids              = list(string)
+    key_permissions         = list(string)
+    secret_permissions      = list(string)
+    certificate_permissions = list(string)
+    storage_permissions     = list(string)
   }))
-  description = "Define Azure Key Vault rbac roles"
+  description = "Define Azure Key Vault access policies"
   default     = {}
-  validation {
-    condition = alltrue([
-      for role_key, role in var.rbac : contains(["keyvault_secrets_officer", "keyvault_secrets_user", "keyvault_certificate_officer", "keyvault_administrator"], role_key)
-    ])
-
-    error_message = "A rbac can only be defined for one of [keyvault_secrets_officer, keyvault_secrets_user, keyvault_certificate_officer, keyvault_administrator]!"
-  }
 }
 
 variable "certificates" {
@@ -75,9 +72,4 @@ variable "secrets" {
     value = string
   }))
   description = "Define Azure Key Vault secrets"
-}
-
-variable "log_analytics_workspace_id" {
-  type        = string
-  description = "Log Analytics Workspace ID"
 }

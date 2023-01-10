@@ -37,7 +37,8 @@ resource "azurerm_key_vault" "main" {
 }
 
 module "keyvaultcertificates" {
-  source   = "../keyvaultcertificates"
+  source = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/keyvaultcertificates/azurerm"
+  version = "0.1.4"
   for_each = var.certificates
 
   keyvault_id = azurerm_key_vault.main.id

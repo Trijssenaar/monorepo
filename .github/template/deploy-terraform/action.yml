@@ -38,7 +38,8 @@ runs:
       with:
         path: artifacts
 
-    - name: "Terraform: Plan ${{ steps.moduleName.outputs.moduleName }}"
+    - name: "Terraform ${{ steps.moduleName.outputs.moduleName }}"
+      id: terraform
       run: |
         $name="${{ inputs.terraformModulePath }}".Replace('/','-')
         $zip=(Get-ChildItem -Path artifacts -Recurse -Filter $name_azure_*.zip)[0]
@@ -55,6 +56,10 @@ runs:
           terraform -chdir="$zipFolder" apply -input=false $PWD/artifacts/${{ env.RESOURCE_GROUP_NAME }}.tfplan/${{ env.RESOURCE_GROUP_NAME }}.tfplan
         }else{
           terraform -chdir="$zipFolder" plan -var 'resource_group_name=${{ env.RESOURCE_GROUP_NAME }}' -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="$PWD/${{ env.RESOURCE_GROUP_NAME }}.tfplan" -input=false
+        }
+        $output=terraform -chdir="$zipFolder" output -json | ConvertFrom-Json
+        foreach($item in $output){
+          echo "${$item.Name}=${$item.Value}" >> $GITHUB_OUTPUT
         }
       env:
         ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}

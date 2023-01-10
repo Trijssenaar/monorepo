@@ -54,11 +54,14 @@ runs:
         terraform -chdir="$zipFolder" init -input=false -backend-config="resource_group_name=${{ steps.prepare-tfstate.outputs.resourceGroupName }}" -backend-config="storage_account_name=${{ steps.prepare-tfstate.outputs.storageAccountName }}" -backend-config="container_name=${{ steps.prepare-tfstate.outputs.containerName }}" -backend-config="key=${{ env.RESOURCE_GROUP_NAME }}.tfstate"
         if('${{ inputs.terraformApply }}' -eq 'true'){
           terraform -chdir="$zipFolder" apply -input=false $PWD/artifacts/${{ env.RESOURCE_GROUP_NAME }}.tfplan/${{ env.RESOURCE_GROUP_NAME }}.tfplan
-          terraform -chdir="$zipFolder" output -json
-          # $output=terraform -chdir="$zipFolder" output -json | ConvertFrom-Json
-          # foreach($item in $output){
-          #   echo "${$item.Name}=${$item.Value}" >> $env:GITHUB_OUTPUT
-          # }
+          $terraformOutput=terraform -chdir="$zipFolder" output -json
+          $terraformOutput
+          $output=$terraformOutput | ConvertFrom-Json
+          $output
+          foreach($item in $output){
+            $item
+            echo "${$item.Name}=${$item.Value}" >> $env:GITHUB_OUTPUT
+          }
         }else{
           terraform -chdir="$zipFolder" plan -var 'resource_group_name=${{ env.RESOURCE_GROUP_NAME }}' -var-file="$PWD/.github/environments/${{ inputs.environment }}.tfvars" -out="$PWD/${{ env.RESOURCE_GROUP_NAME }}.tfplan" -input=false
         }

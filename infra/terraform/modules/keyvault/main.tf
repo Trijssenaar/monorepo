@@ -36,15 +36,6 @@ resource "azurerm_key_vault" "main" {
   }
 }
 
-module "keyvaultcertificates" {
-  source = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/keyvaultcertificates/azurerm"
-  version = "0.1.5"
-  for_each = var.certificates
-
-  keyvault_id = azurerm_key_vault.main.id
-  certificate = each.value
-}
-
 resource "azurerm_key_vault_secret" "secret" {
   for_each = var.secrets
 
@@ -56,3 +47,61 @@ resource "azurerm_key_vault_secret" "secret" {
     ignore_changes = all
   }
 }
+
+resource "azurerm_key_vault_certificate" "certificate" {
+  for_each = var.certificates
+
+  name         = each.value.name
+  key_vault_id = azurerm_key_vault.main.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_type   = "RSA"
+      key_size   = 2048
+      reuse_key  = true
+    }
+
+    lifetime_action {
+      action {
+        action_type = "EmailContacts"
+      }
+
+      trigger {
+        days_before_expiry = 30
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      key_usage = [
+        "cRLSign",
+        "dataEncipherment",
+        "digitalSignature",
+        "keyAgreement",
+        "keyCertSign",
+        "keyEncipherment",
+      ]
+
+      subject_alternative_names {
+        dns_names = each.value.dns_names
+      }
+
+      subject            = each.value.subject
+      validity_in_months = 12
+    }
+
+  }
+
+  lifecycle {
+    ignore_changes = all
+  }
+}
+

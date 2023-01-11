@@ -21,7 +21,7 @@ runs:
       id: secrets
       run: |
         $keyvaults=az keyvault list --resource-group $env:RESOURCE_GROUP_NAME | ConvertFrom-Json | Where-Object { $_.name -like 'main-*-kv'}
-        if($keyvaults.Count -ne 2){throw 'Number of available keyvaults not equal to 1'}
+        if($keyvaults.Count -ne 1){throw 'Number of available keyvaults not equal to 1'}
 
         $mainKeyvault=$keyvaults[0]
         $secrets=az keyvault secret list --id $mainKeyvault.properties.vaultUri --maxresults 25 | ConvertFrom-Json

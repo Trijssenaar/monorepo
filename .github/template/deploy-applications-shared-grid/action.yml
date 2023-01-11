@@ -20,7 +20,24 @@ runs:
     - name: "Loads secrets"
       id: secrets
       run: |
-        az keyvault list --resource-group $env:RESOURCE_GROUP_NAME
+        $keyvaults=az keyvault list --resource-group $env:RESOURCE_GROUP_NAME | ConvertFrom-Json | Where-Object { $_.name -like 'main-*-kv'}
+        if($keyvaults.Count -ne 2){throw 'Number of available keyvaults not equal to 1'}
+
+        $mainKeyvault=$keyvaults[0]
+        $secrets=az keyvault secret list --id $mainKeyvault.properties.vaultUri --maxresults 25 | ConvertFrom-Json
+        $secrets | ForEach-Object {
+          $secretValue=az keyvault secret show --id $_.id | ConvertFrom-Json
+          echo "$($_.name)=${secretValue.value}" >> $env:GITHUB_OUTPUT
+        }
       env:
         RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
+      shell: pwsh
+
+    - name: "Show secrets"
+      id: secrets
+      run: |
+        Write-Host $env:GITHUB_OUTPUT
+        Write-Host $env:VM-ADMIN-PASSWORD
+      env:
+        VM-ADMIN-PASSWORD: ${{ steps.secrets.outputs.VM-ADMIN-PASSWORD }}
       shell: pwsh

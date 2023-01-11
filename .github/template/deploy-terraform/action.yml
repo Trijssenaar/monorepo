@@ -77,4 +77,6 @@ runs:
       if: ${{ inputs.terraformApply == 'true'  }}
       run: |
         az keyvault secret list --id $env:KEY_VAULT_ID
+      env:
+        KEY_VAULT_ID: ${{ env.KEY_VAULT_ID }}
       shell: pwsh

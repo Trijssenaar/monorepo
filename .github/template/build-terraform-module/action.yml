@@ -47,11 +47,12 @@ runs:
         terraform validate
         if($LastExitCode){throw}
 
-        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse
-        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/terraform.* -Force -Recurse
-        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/provider.tf -Force -Recurse
-        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/terraform.tf -Force -Recurse
-        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/*.tfvars -Force -Recurse
+        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/.terraform** -Force -Recurse -ErrorAction SilentlyContinue
+        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/terraform.tfstate -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/provider.tf -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/terraform.tf -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }}/*.tfvars -Force -ErrorAction SilentlyContinue
         pushd ${{ inputs.terraformPath }}/${{ inputs.terraformModulePath }};zip ${{ env.TERRAFORM_MODULE }}_${{ env.TERRAFORM_PROVIDER }}_${{ env.MONOREPO_SEMVER }}.zip -r **;popd
       shell: pwsh
 

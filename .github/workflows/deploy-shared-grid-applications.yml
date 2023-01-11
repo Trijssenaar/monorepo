@@ -37,7 +37,7 @@ jobs:
     environment: TST
     runs-on: ubuntu-latest
     needs:
-      - Deploy-DEV
+      - Deploy-DEV-applications
     steps:
       - uses: actions/checkout@v3
         with:

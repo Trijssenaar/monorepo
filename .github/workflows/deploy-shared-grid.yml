@@ -110,3 +110,18 @@ jobs:
           environment: TST
           terraformModulePath: deploy/shared-grid
           terraformApply: true
+
+  Deploy-TST-applications:
+    if: github.ref == 'refs/heads/main'
+    concurrency: TST
+    environment: TST
+    runs-on: ubuntu-latest
+    needs:
+      - Deploy-TST
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: "./.github/template/deploy-applications-shared-grid"
+        with:
+          environment: TST

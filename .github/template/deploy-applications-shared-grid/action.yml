@@ -40,8 +40,13 @@ runs:
 
     - name: "Show secrets"
       run: |
-        Write-Host "$env:GITHUB_OUTPUT" 
-        Write-Host "$env:VM-ADMIN-PASSWORD"
+        Write-Host "PRIVATE_KEY_PEM = $env:PRIVATE_KEY_PEM"
+        Write-Host "PUBLIC_KEY_OPENSSH = $env:PUBLIC_KEY_OPENSSH"
+        Write-Host "UNDEFINED = $env:UNDEFINED"
+        Write-Host "VM_ADMIN_PASSWORD = $env:VM_ADMIN_PASSWORD"
       env:
-        VM-ADMIN-PASSWORD: ${{ steps.secrets.outputs.VM-ADMIN-PASSWORD }}
+        PRIVATE_KEY_PEM: ${{ steps.secrets.outputs.PRIVATE_KEY_PEM }}
+        PUBLIC_KEY_OPENSSH: ${{ steps.secrets.outputs.PUBLIC_KEY_OPENSSH }}
+        UNDEFINED: ${{ steps.secrets.outputs.UNDEFINED }}
+        VM_ADMIN_PASSWORD: ${{ steps.secrets.outputs.VM_ADMIN_PASSWORD }}
       shell: pwsh

@@ -1,3 +1,5 @@
+name: deploy-shared-grid
+
 permissions:
   id-token: write
   contents: read

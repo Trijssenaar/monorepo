@@ -37,8 +37,8 @@ runs:
 
     - name: "Show secrets"
       run: |
-        Write-Host $env:GITHUB_OUTPUT
-        Write-Host $env:VM-ADMIN-PASSWORD
+        Write-Host "$env:GITHUB_OUTPUT" 
+        Write-Host "$env:VM-ADMIN-PASSWORD"
       env:
         VM-ADMIN-PASSWORD: ${{ steps.secrets.outputs.VM-ADMIN-PASSWORD }}
       shell: pwsh

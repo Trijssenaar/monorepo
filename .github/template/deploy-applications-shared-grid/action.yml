@@ -25,11 +25,10 @@ runs:
         if($keyvaults.Count -ne 1){throw 'Number of available keyvaults not equal to 1'}
         $mainKeyvault=$keyvaults[0]
 
-        Write-Host "Retrieving secrets..."
+        Write-Host "Retrieving secrets from $mainKeyvault.id..."
         $secrets=az keyvault secret list --id $mainKeyvault.properties.vaultUri --maxresults 25 | ConvertFrom-Json
         $secrets | ForEach-Object {
           $name=$_.name -replace '-','_'
-          Write-Host "Retrieving secret value for $name..."
           $secretValue=az keyvault secret show --id $_.id | ConvertFrom-Json
           $value=$secretValue.value | ConvertTo-Json
           echo "::add-mask::$value"

@@ -17,7 +17,7 @@ runs:
     - name: Prepare Azure
       uses: ./.github/template/prepare-azure
 
-    - name: "Loads secrets"
+    - name: "Load secrets"
       id: secrets
       run: |
         $keyvaults=az keyvault list --resource-group $env:RESOURCE_GROUP_NAME | ConvertFrom-Json | Where-Object { $_.name -like 'main-*-kv'}

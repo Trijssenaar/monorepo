@@ -27,7 +27,9 @@ runs:
         $secrets=az keyvault secret list --id $mainKeyvault.properties.vaultUri --maxresults 25 | ConvertFrom-Json
         $secrets | ForEach-Object {
           $secretValue=az keyvault secret show --id $_.id | ConvertFrom-Json
-          echo "$($_.name)=${secretValue.value}" >> $env:GITHUB_OUTPUT
+          $name=$_.name -replace '-','_'
+          $value=$secretValue.value
+          echo "$name=$value" >> $env:GITHUB_OUTPUT
         }
       env:
         RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}

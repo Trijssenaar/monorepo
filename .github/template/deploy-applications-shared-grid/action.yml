@@ -1,0 +1,26 @@
+name: deploy-applications-shared-grid
+description: "Deploy applications shared grid"
+
+inputs:
+  environment:
+    required: true
+    description: "Name of the environment to deploy to"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare Environment Variables
+      uses: ./.github/template/prepare-environment-variables
+      with:
+        environment: ${{ inputs.environment }}
+
+    - name: Prepare Azure
+      uses: ./.github/template/prepare-azure
+
+    - name: "Loads secrets"
+      id: secrets
+      run: |
+        az keyvault list --resource-group $env:RESOURCE_GROUP_NAME
+      env:
+        RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
+      shell: pwsh

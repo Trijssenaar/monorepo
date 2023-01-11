@@ -32,6 +32,7 @@ runs:
           Write-Host "Retrieving secret value for $name..."
           $secretValue=az keyvault secret show --id $_.id | ConvertFrom-Json
           $value=$secretValue.value | ConvertTo-Json
+          echo "::add-mask::$value"
           echo "$name=$value" >> $env:GITHUB_OUTPUT
         }
       env:

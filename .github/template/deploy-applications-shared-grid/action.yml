@@ -34,7 +34,6 @@ runs:
       shell: pwsh
 
     - name: "Show secrets"
-      id: secrets
       run: |
         Write-Host $env:GITHUB_OUTPUT
         Write-Host $env:VM-ADMIN-PASSWORD

@@ -1,20 +1,16 @@
-name: app1 copy;
+name: app3;
 
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
+    branches: ["feature/new"]
     paths:
-      - .github/workflows/app1.yml
-      - .github/template/build-prepare/**
-      - .github/template/build-docker/**
+      - .github/workflows/app3.yml
       - src/app1/**
   pull_request:
-    branches: ["main"]
+    branches: ["feature/new"]
     paths:
-      - .github/workflows/app1.yml
-      - .github/template/build-prepare/**
-      - .github/template/build-docker/**
+      - .github/workflows/app3.yml
       - src/app1/**
 
 jobs:

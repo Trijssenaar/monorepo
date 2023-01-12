@@ -17,6 +17,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+
   - package-ecosystem: "docker"
     directory: "/src/app1"
     registries:
@@ -29,6 +30,7 @@ updates:
       - docker-artifactory
     schedule:
       interval: "daily"
+
   - package-ecosystem: "terraform"
     directory: "/infra/terraform/deploy/shared-grid"
     registries:

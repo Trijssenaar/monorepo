@@ -26,9 +26,9 @@ branches:
     is-mainline: false
     pre-release-weight: 0
   main:
-    mode: ContinuousDeployment
+    mode: ContinuousDelivery
     tag: ""
-    increment: Minor
+    increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
     regex: ^master$|^main$

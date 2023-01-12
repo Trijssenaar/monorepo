@@ -11,6 +11,7 @@ on:
     paths:
       - .github/workflows/terraform-module-keyvault.yml
       - infra/terraform/modules/keyvault/**
+
   pull_request:
     branches: ["main"]
     paths:

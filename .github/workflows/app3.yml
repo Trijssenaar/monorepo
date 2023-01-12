@@ -1,0 +1,53 @@
+name: app3;
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["feature/new"]
+    paths:
+      - .github/workflows/app3.yml
+      - src/app1/**
+  pull_request:
+    branches: ["feature/new"]
+    paths:
+      - .github/workflows/app3.yml
+      - src/app1/**
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: "./.github/template/prepare-gitversion"
+
+      - uses: "./.github/template/prepare-jfrog"
+        with:
+          secret-env-1: ${{ secrets.JF_SECRET_ENV_1 }}
+
+      - uses: "./.github/template/prepare-docker"
+        with:
+          registry: trijssenaar.jfrog.io
+          username: strijssenaar@xpirit.com
+          password: ${{ secrets.DOCKER_APIKEY }}
+
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.15
+
+      - name: Build image app1-${{ steps.gitversion.outputs.EscapedBranchName }}
+        uses: "./.github/template/build-docker"
+        with:
+          application-name: app1
+          image-name: app1-${{ steps.gitversion.outputs.EscapedBranchName }}
+          version: ${{ steps.gitversion.outputs.MajorMinorPatch }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+
+    outputs:
+      MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}
+      fullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}
+      informationalVersion: ${{ steps.gitversion.outputs.InformationalVersion }}

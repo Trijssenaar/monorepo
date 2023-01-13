@@ -7,12 +7,12 @@ permissions:
 on:
   workflow_dispatch:
   push:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "release/*"]
     paths:
       - .github/workflows/terraform-module-hello-world.yml
       - infra/terraform/modules/hello-world/**
   pull_request:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "release/*"]
     paths:
       - .github/workflows/terraform-module-hello-world.yml
       - infra/terraform/modules/hello-world/**

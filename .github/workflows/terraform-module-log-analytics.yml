@@ -7,12 +7,12 @@ permissions:
 on:
   workflow_dispatch:
   push:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "release/*"]
     paths:
       - .github/workflows/terraform-module-log-analytics.yml
       - infra/terraform/modules/log-analytics/**
   pull_request:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "release/*"]
     paths:
       - .github/workflows/terraform-module-log-analytics.yml
       - infra/terraform/modules/log-analytics/**

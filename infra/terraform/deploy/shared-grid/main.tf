@@ -41,7 +41,7 @@ resource "tls_private_key" "ssh_virtual_machines" {
 
 module "keyvault" {
   source  = "trijssenaar.jfrog.io/infrastructure-terraform-local__monorepo/keyvault/azurerm"
-  version = "0.12.0"
+  version = "0.14.0"
 
   keyvault_name       = local.keyvault_name
   resource_group_name = resource.azurerm_resource_group.shared-grid.name

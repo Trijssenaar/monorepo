@@ -7,12 +7,12 @@ permissions:
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
     paths:
       - .github/workflows/terraform-module-monitor-action-group.yml
       - infra/terraform/modules/monitor-action-group/**
   pull_request:
-    branches: ["main"]
+    branches: ["main", "dev"]
     paths:
       - .github/workflows/terraform-module-monitor-action-group.yml
       - infra/terraform/modules/monitor-action-group/**

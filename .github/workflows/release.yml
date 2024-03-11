@@ -31,7 +31,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.13.4
 
       - name: Setup Docker
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: trijssenaar.jfrog.io
           username: strijssenaar@xpirit.com

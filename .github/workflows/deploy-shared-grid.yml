@@ -21,7 +21,7 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: "./.github/template/build-terraform"
@@ -38,7 +38,7 @@ jobs:
     needs:
       - Build
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: "./.github/template/deploy-terraform"
@@ -54,7 +54,7 @@ jobs:
     needs:
       - Deploy-DEV-plan
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: "./.github/template/deploy-terraform"
@@ -71,7 +71,7 @@ jobs:
     needs:
       - Deploy-DEV
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: "./.github/template/deploy-applications-shared-grid"
@@ -86,7 +86,7 @@ jobs:
     needs:
       - Build
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: "./.github/template/deploy-terraform"
@@ -102,7 +102,7 @@ jobs:
     needs:
       - Deploy-TST-plan
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: "./.github/template/deploy-terraform"
@@ -119,7 +119,7 @@ jobs:
     needs:
       - Deploy-TST
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: "./.github/template/deploy-applications-shared-grid"
